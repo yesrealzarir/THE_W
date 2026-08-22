@@ -1,1284 +1,1344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>THE W — Official</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #080808;
-            color: #f5f5f5;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            width: 500px;
-            height: 500px;
-            background: white;
-            opacity: 0.035;
-            filter: blur(150px);
-            border-radius: 50%;
-            top: -220px;
-            left: -160px;
-            pointer-events: none;
-        }
-
-        body::after {
-            content: "";
-            position: fixed;
-            width: 450px;
-            height: 450px;
-            background: white;
-            opacity: 0.025;
-            filter: blur(150px);
-            border-radius: 50%;
-            bottom: -200px;
-            right: -150px;
-            pointer-events: none;
-        }
-
-        /* ---------- LOCK SCREENS ---------- */
-
-        .lock-screen {
-            min-height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            padding: 20px;
-        }
-
-        .lock-card {
-            width: 100%;
-            max-width: 420px;
-
-            background: #111;
-
-            border: 1px solid #292929;
-            border-radius: 18px;
-
-            padding: 32px 26px;
-
-            text-align: center;
-
-            box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-
-            animation: appear 0.7s ease;
-        }
-
-        @keyframes appear {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .lock-icon {
-            font-size: 38px;
-            margin-bottom: 18px;
-        }
-
-        .lock-card h1 {
-            font-size: 29px;
-            margin-bottom: 15px;
-        }
-
-        .lock-card p {
-            color: #888;
-            line-height: 1.6;
-            font-size: 14px;
-        }
-
-        .verify-box {
-            margin-top: 25px;
-
-            padding: 16px;
-
-            background: #181818;
-
-            border: 1px solid #292929;
-
-            border-radius: 12px;
-
-            text-align: left;
-
-            cursor: pointer;
-        }
-
-        .verify-box:hover {
-            border-color: #444;
-        }
-
-        .verify-left {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-        }
-
-        .fake-checkbox {
-            width: 23px;
-            height: 23px;
-
-            border: 2px solid #777;
-            border-radius: 4px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            flex-shrink: 0;
-        }
-
-        .fake-checkbox.checked {
-            background: white;
-            color: black;
-        }
-
-        .verify-text {
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .loading {
-            display: none;
-
-            margin-top: 20px;
-
-            color: #777;
-            font-size: 13px;
-        }
-
-        input {
-            width: 100%;
-
-            margin-top: 20px;
-
-            padding: 13px;
-
-            background: #0b0b0b;
-            color: white;
-
-            border: 1px solid #333;
-            border-radius: 10px;
-
-            outline: none;
-
-            text-align: center;
-
-            font-size: 14px;
-        }
-
-        input:focus {
-            border-color: #666;
-        }
-
-        .unlock-btn {
-            width: 100%;
-
-            margin-top: 12px;
-
-            padding: 13px;
-
-            background: white;
-            color: black;
-
-            border: none;
-            border-radius: 10px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-        .unlock-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .error {
-            color: #777;
-
-            font-size: 12px;
-
-            min-height: 18px;
-
-            margin-top: 12px;
-        }
-
-        #passwordScreen,
-        #website {
-            display: none;
-        }
-
-        /* ---------- NAV ---------- */
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-
-            padding: 18px 7%;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            background: rgba(8,8,8,0.78);
-
-            backdrop-filter: blur(15px);
-
-            border-bottom: 1px solid #181818;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 4px;
-        }
-
-        nav a {
-            color: #777;
-            text-decoration: none;
-
-            margin-left: 24px;
-
-            font-size: 13px;
-
-            transition: 0.2s;
-        }
-
-        nav a:hover {
-            color: white;
-        }
-
-        /* ---------- HERO ---------- */
-
-        .hero {
-            min-height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            text-align: center;
-
-            padding: 100px 20px 60px;
-        }
-
-        .hero-content {
-            max-width: 850px;
-        }
-
-        .tag {
-            display: inline-block;
-
-            padding: 7px 14px;
-
-            border: 1px solid #292929;
-            border-radius: 30px;
-
-            color: #777;
-
-            font-size: 11px;
-
-            letter-spacing: 2px;
-
-            margin-bottom: 25px;
-        }
-
-        .hero h1 {
-            font-size: clamp(75px, 17vw, 180px);
-
-            line-height: 0.8;
-
-            letter-spacing: -9px;
-
-            font-weight: 900;
-        }
-
-        .hero h1 span {
-            color: #666;
-        }
-
-        .hero p {
-            margin-top: 35px;
-
-            color: #888;
-
-            font-size: 16px;
-
-            line-height: 1.7;
-        }
-
-        .enter-btn {
-            display: inline-block;
-
-            margin-top: 35px;
-
-            padding: 14px 25px;
-
-            background: white;
-            color: black;
-
-            border-radius: 11px;
-
-            text-decoration: none;
-
-            font-weight: bold;
-
-            transition: 0.25s;
-        }
-
-        .enter-btn:hover {
-            transform: translateY(-4px);
-        }
-
-        /* ---------- SECTIONS ---------- */
-
-        section {
-            padding: 100px 7%;
-        }
-
-        .section-title {
-            font-size: 38px;
-            margin-bottom: 10px;
-        }
-
-        .section-subtitle {
-            color: #666;
-            margin-bottom: 45px;
-        }
-
-        /* ---------- MEMBERS ---------- */
-
-        .members {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(210px, 1fr));
-
-            gap: 15px;
-        }
-
-        .member {
-            background: #111;
-
-            border: 1px solid #242424;
-
-            padding: 25px;
-
-            border-radius: 17px;
-
-            transition: 0.25s;
-        }
-
-        .member:hover {
-            transform: translateY(-6px);
-
-            background: #151515;
-
-            border-color: #3a3a3a;
-        }
-
-        .avatar {
-            width: 58px;
-            height: 58px;
-
-            border-radius: 50%;
-
-            background: #222;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            font-size: 20px;
-
-            font-weight: bold;
-
-            margin-bottom: 20px;
-        }
-
-        .member h3 {
-            font-size: 20px;
-        }
-
-        .role {
-            color: #777;
-
-            font-size: 12px;
-
-            margin-top: 5px;
-        }
-
-        .description {
-            color: #999;
-
-            font-size: 14px;
-
-            line-height: 1.6;
-
-            margin-top: 15px;
-        }
-
-        .tags {
-            margin-top: 16px;
-        }
-
-        .tags span {
-            display: inline-block;
-
-            padding: 5px 8px;
-
-            margin: 3px;
-
-            border: 1px solid #292929;
-
-            border-radius: 20px;
-
-            color: #777;
-
-            font-size: 10px;
-        }
-
-        /* ---------- STATS ---------- */
-
-        .stats {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 15px;
-        }
-
-        .stat {
-            background: #111;
-
-            border: 1px solid #242424;
-
-            border-radius: 16px;
-
-            padding: 30px;
-
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 40px;
-
-            font-weight: 900;
-        }
-
-        .stat-label {
-            color: #666;
-
-            font-size: 12px;
-
-            margin-top: 7px;
-        }
-
-        /* ---------- VIBE ---------- */
-
-        .vibe {
-            max-width: 800px;
-
-            padding: 35px;
-
-            background: #111;
-
-            border: 1px solid #242424;
-
-            border-radius: 18px;
-        }
-
-        .vibe p {
-            color: #aaa;
-
-            line-height: 1.8;
-
-            font-size: 16px;
-        }
-
-        .vibe strong {
-            color: white;
-        }
-
-        /* ---------- MOMENTS ---------- */
-
-        .moments {
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(240px, 1fr));
-
-            gap: 15px;
-        }
-
-        .moment {
-            min-height: 190px;
-
-            padding: 25px;
-
-            background: #111;
-
-            border: 1px solid #242424;
-
-            border-radius: 16px;
-
-            display: flex;
-
-            flex-direction: column;
-
-            justify-content: flex-end;
-
-            transition: 0.25s;
-        }
-
-        .moment:hover {
-            transform: translateY(-5px);
-
-            background: #151515;
-        }
-
-        .moment-number {
-            color: #555;
-
-            font-size: 11px;
-
-            margin-bottom: 10px;
-
-            letter-spacing: 1px;
-        }
-
-        .moment h3 {
-            font-size: 20px;
-        }
-
-        .moment p {
-            color: #777;
-
-            margin-top: 7px;
-
-            font-size: 13px;
-
-            line-height: 1.5;
-        }
-
-        /* ---------- SECRET ---------- */
-
-        .secret-area {
-            text-align: center;
-
-            margin-top: 50px;
-        }
-
-        .secret-btn {
-            padding: 13px 20px;
-
-            border-radius: 10px;
-
-            border: 1px solid #333;
-
-            background: #151515;
-
-            color: white;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-        .secret-btn:hover {
-            background: #222;
-
-            transform: translateY(-2px);
-        }
-
-        #secretMessage {
-            margin-top: 18px;
-
-            color: #888;
-
-            min-height: 20px;
-        }
-
-        /* ---------- FOOTER ---------- */
-
-        footer {
-            padding: 60px 20px;
-
-            text-align: center;
-
-            border-top: 1px solid #181818;
-
-            color: #555;
-
-            font-size: 12px;
-        }
-
-        footer strong {
-            color: #aaa;
-        }
-
-        /* ---------- MOBILE ---------- */
-
-        @media (max-width: 600px) {
-
-            nav {
-                padding: 16px 20px;
-            }
-
-            nav a {
-                margin-left: 12px;
-
-                font-size: 11px;
-            }
-
-            .hero h1 {
-                letter-spacing: -5px;
-            }
-
-            section {
-                padding: 75px 20px;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>THE W — Private Hub</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#070709;
+    color:#f5f5f5;
+    overflow-x:hidden;
+}
+
+/* ===== COLOR GLOW ===== */
+
+body::before{
+    content:"";
+    position:fixed;
+    width:420px;
+    height:420px;
+    background:#6c63ff;
+    opacity:.10;
+    filter:blur(130px);
+    border-radius:50%;
+    top:-180px;
+    left:-150px;
+    pointer-events:none;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:420px;
+    height:420px;
+    background:#ff3cac;
+    opacity:.07;
+    filter:blur(130px);
+    border-radius:50%;
+    bottom:-180px;
+    right:-150px;
+    pointer-events:none;
+}
+
+/* ===== LOCK SCREEN ===== */
+
+.lock-screen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.lock-card{
+    width:100%;
+    max-width:430px;
+    background:rgba(17,17,22,.9);
+    border:1px solid #292934;
+    border-radius:22px;
+    padding:35px 27px;
+    text-align:center;
+    box-shadow:0 25px 80px rgba(0,0,0,.5);
+    animation:appear .7s ease;
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.lock-icon{
+    font-size:40px;
+    margin-bottom:18px;
+}
+
+.lock-card h1{
+    font-size:29px;
+    margin-bottom:12px;
+}
+
+.lock-card p{
+    color:#888;
+    line-height:1.7;
+    font-size:14px;
+}
+
+.verify-box{
+    margin-top:25px;
+    padding:16px;
+    background:#15151b;
+    border:1px solid #30303b;
+    border-radius:13px;
+    cursor:pointer;
+    text-align:left;
+    transition:.2s;
+}
+
+.verify-box:hover{
+    border-color:#6961ff;
+}
+
+.verify-left{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.fake-checkbox{
+    width:24px;
+    height:24px;
+    border:2px solid #777;
+    border-radius:5px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.fake-checkbox.checked{
+    background:#6c63ff;
+    border-color:#6c63ff;
+}
+
+.verify-text{
+    color:#ccc;
+    font-size:14px;
+}
+
+.loading{
+    display:none;
+    margin-top:20px;
+    color:#777;
+    font-size:13px;
+}
+
+input{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    background:#0b0b0f;
+    color:white;
+    border:1px solid #33333e;
+    border-radius:11px;
+    outline:none;
+    text-align:center;
+    font-size:14px;
+}
+
+input:focus{
+    border-color:#6c63ff;
+}
+
+.unlock-btn{
+    width:100%;
+    margin-top:12px;
+    padding:14px;
+    background:linear-gradient(100deg,#6c63ff,#ff3cac);
+    color:white;
+    border:none;
+    border-radius:11px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.unlock-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 30px rgba(108,99,255,.2);
+}
+
+.error{
+    color:#ff6b8a;
+    font-size:12px;
+    min-height:18px;
+    margin-top:12px;
+}
+
+#passwordScreen,
+#website{
+    display:none;
+}
+
+/* ===== NAV ===== */
+
+nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:100;
+
+    padding:18px 7%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:rgba(7,7,9,.78);
+    backdrop-filter:blur(16px);
+
+    border-bottom:1px solid #191920;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:4px;
+}
+
+.logo span{
+    color:#6c63ff;
+}
+
+nav a{
+    color:#777;
+    text-decoration:none;
+    margin-left:24px;
+    font-size:13px;
+    transition:.2s;
+}
+
+nav a:hover{
+    color:#ff65b5;
+}
+
+/* ===== HERO ===== */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:100px 20px 60px;
+}
+
+.hero-content{
+    max-width:850px;
+}
+
+.tag{
+    display:inline-block;
+    padding:8px 14px;
+    border:1px solid #30303b;
+    border-radius:30px;
+    color:#9c97ff;
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:clamp(75px,17vw,180px);
+    line-height:.8;
+    letter-spacing:-9px;
+    font-weight:900;
+}
+
+.hero h1 span{
+    background:linear-gradient(100deg,#6c63ff,#ff3cac);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    margin-top:35px;
+    color:#888;
+    font-size:16px;
+    line-height:1.8;
+}
+
+.hero p strong{
+    color:#ddd;
+}
+
+.enter-btn{
+    display:inline-block;
+    margin-top:35px;
+    padding:14px 25px;
+    background:linear-gradient(100deg,#6c63ff,#ff3cac);
+    color:white;
+    border-radius:11px;
+    text-decoration:none;
+    font-weight:bold;
+    transition:.25s;
+}
+
+.enter-btn:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 35px rgba(108,99,255,.2);
+}
+
+/* ===== SECTIONS ===== */
+
+section{
+    padding:100px 7%;
+}
+
+.section-title{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.section-subtitle{
+    color:#666;
+    margin-bottom:45px;
+}
+
+/* ===== MEMBERS ===== */
+
+.members{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:15px;
+}
+
+.member{
+    position:relative;
+    overflow:hidden;
+
+    background:#101014;
+
+    border:1px solid #25252e;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    transition:.25s;
+}
+
+.member::before{
+    content:"";
+    position:absolute;
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    filter:blur(50px);
+    opacity:.12;
+    right:-35px;
+    top:-35px;
+}
+
+.member:nth-child(1)::before{
+    background:#6c63ff;
+}
+
+.member:nth-child(2)::before{
+    background:#ff7b54;
+}
+
+.member:nth-child(3)::before{
+    background:#ff3cac;
+}
+
+.member:nth-child(4)::before{
+    background:#35d0ba;
+}
+
+.member:nth-child(5)::before{
+    background:#ffd166;
+}
+
+.member:hover{
+    transform:translateY(-7px);
+    border-color:#41414e;
+}
+
+.avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:20px;
+    font-weight:bold;
+
+    margin-bottom:20px;
+
+    background:linear-gradient(135deg,#25252d,#15151a);
+    border:1px solid #363641;
+}
+
+.member:nth-child(1) .avatar{
+    color:#9c97ff;
+}
+
+.member:nth-child(2) .avatar{
+    color:#ff916f;
+}
+
+.member:nth-child(3) .avatar{
+    color:#ff6fbd;
+}
+
+.member:nth-child(4) .avatar{
+    color:#54e5d0;
+}
+
+.member:nth-child(5) .avatar{
+    color:#ffe08a;
+}
+
+.member h3{
+    font-size:20px;
+}
+
+.role{
+    color:#777;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.description{
+    color:#999;
+    font-size:14px;
+    line-height:1.65;
+    margin-top:15px;
+}
+
+.tags{
+    margin-top:16px;
+}
+
+.tags span{
+    display:inline-block;
+    padding:5px 8px;
+    margin:3px;
+    border:1px solid #292933;
+    border-radius:20px;
+    color:#777;
+    font-size:10px;
+}
+
+/* ===== VIBE ===== */
+
+.vibe{
+    max-width:850px;
+    padding:35px;
+    background:#101014;
+    border:1px solid #25252e;
+    border-radius:20px;
+}
+
+.vibe p{
+    color:#aaa;
+    line-height:1.9;
+    font-size:16px;
+}
+
+.vibe strong{
+    color:white;
+}
+
+.highlight{
+    color:#9c97ff;
+}
+
+/* ===== STATS ===== */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.stat{
+    background:#101014;
+    border:1px solid #25252e;
+    border-radius:17px;
+    padding:30px;
+    text-align:center;
+}
+
+.stat-number{
+    font-size:42px;
+    font-weight:900;
+
+    background:linear-gradient(100deg,#6c63ff,#ff3cac);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.stat-label{
+    color:#666;
+    font-size:12px;
+    margin-top:7px;
+}
+
+/* ===== MOMENTS ===== */
+
+.moments{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:15px;
+}
+
+.moment{
+    min-height:190px;
+    padding:25px;
+    background:#101014;
+    border:1px solid #25252e;
+    border-radius:17px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+
+    transition:.25s;
+}
+
+.moment:hover{
+    transform:translateY(-5px);
+    border-color:#42424d;
+}
+
+.moment-number{
+    color:#6c63ff;
+    font-size:11px;
+    margin-bottom:10px;
+    letter-spacing:1px;
+}
+
+.moment h3{
+    font-size:20px;
+}
+
+.moment p{
+    color:#777;
+    margin-top:7px;
+    font-size:13px;
+    line-height:1.6;
+}
+
+/* ===== SECRET ===== */
+
+.secret-area{
+    text-align:center;
+    margin-top:50px;
+}
+
+.secret-btn{
+    padding:13px 20px;
+    border-radius:10px;
+    border:1px solid #33333d;
+    background:#15151a;
+    color:white;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.secret-btn:hover{
+    background:#202027;
+    border-color:#6c63ff;
+}
+
+#secretMessage{
+    margin-top:18px;
+    color:#888;
+    min-height:20px;
+}
+
+/* ===== CREDIT ===== */
+
+.credit{
+    margin-top:70px;
+    text-align:center;
+}
+
+.credit-box{
+    display:inline-block;
+    padding:22px 28px;
+
+    background:#101014;
+
+    border:1px solid #292934;
+
+    border-radius:16px;
+}
+
+.credit-box .small{
+    color:#666;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.credit-box h3{
+    margin-top:8px;
+    font-size:20px;
+
+    background:linear-gradient(100deg,#6c63ff,#ff3cac);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.credit-box p{
+    margin-top:7px;
+    color:#777;
+    font-size:12px;
+}
+
+/* ===== FOOTER ===== */
+
+footer{
+    padding:60px 20px;
+    text-align:center;
+    border-top:1px solid #18181e;
+    color:#555;
+    font-size:12px;
+}
+
+footer strong{
+    color:#aaa;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:600px){
+
+    nav{
+        padding:16px 20px;
+    }
+
+    nav a{
+        margin-left:12px;
+        font-size:11px;
+    }
+
+    .hero h1{
+        letter-spacing:-5px;
+    }
+
+    section{
+        padding:75px 20px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .vibe{
+        padding:25px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 
-    <!-- HUMAN VERIFICATION -->
+<!-- =========================
+     HUMAN VERIFICATION
+========================= -->
 
-    <div class="lock-screen" id="humanScreen">
+<div class="lock-screen" id="humanScreen">
 
-        <div class="lock-card">
+    <div class="lock-card">
 
-            <div class="lock-icon">
-                🤖
-            </div>
+        <div class="lock-icon">🤖</div>
 
-            <h1>Human verification</h1>
+        <h1>Human verification</h1>
 
-            <p>
-                Before entering THE W, we need to make sure
-                you're actually a human.
-            </p>
+        <p>
+            THE W has to make sure you're actually human
+            before letting you in.
+            <br><br>
+            <span style="color:#aaa;">
+                হ্যাঁ ভাই, এত সহজে ঢুকতে দিচ্ছি না 💀
+            </span>
+        </p>
 
-            <div class="verify-box" onclick="verifyHuman()">
+        <div class="verify-box" onclick="verifyHuman()">
 
-                <div class="verify-left">
+            <div class="verify-left">
 
-                    <div class="fake-checkbox" id="checkbox">
-                    </div>
+                <div class="fake-checkbox" id="checkbox"></div>
 
-                    <div class="verify-text">
-                        I'm a human
-                    </div>
-
+                <div class="verify-text">
+                    I'm a human
                 </div>
 
             </div>
 
-            <div class="loading" id="loading">
-                Verifying...
+        </div>
+
+        <div class="loading" id="loading">
+            Checking... একটু দাঁড়াও 👀
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     PASSWORD
+========================= -->
+
+<div class="lock-screen" id="passwordScreen">
+
+    <div class="lock-card">
+
+        <div class="lock-icon">🔐</div>
+
+        <h1>Almost there.</h1>
+
+        <p>
+            Human verification passed.
+            <br>
+            এখন আসল পরীক্ষা।
+        </p>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Secret password..."
+        >
+
+        <button
+            class="unlock-btn"
+            onclick="checkPassword()"
+        >
+            Enter THE W
+        </button>
+
+        <div class="error" id="passwordError"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     WEBSITE
+========================= -->
+
+<div id="website">
+
+
+<!-- NAV -->
+
+<nav>
+
+    <div class="logo">
+        THE <span>W</span>
+    </div>
+
+    <div>
+        <a href="#members">Members</a>
+        <a href="#moments">Moments</a>
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            PRIVATE GROUP HUB
+        </div>
+
+        <h1>
+            THE <span>W</span>
+        </h1>
+
+        <p>
+            পাঁচজন মানুষ।<br>
+            অনেক বেশি <strong>chaos</strong>।<br>
+            আর somehow সবকিছু ঠিকই চলছে।
+        </p>
+
+        <a href="#members" class="enter-btn">
+            ঢুকেই পড়ো →
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- MEMBERS -->
+
+<section id="members">
+
+    <h2 class="section-title">
+        The Members
+    </h2>
+
+    <p class="section-subtitle">
+        যারা মিলে THE W বানাইছে।
+    </p>
+
+
+    <div class="members">
+
+
+        <!-- XARIF -->
+
+        <div class="member">
+
+            <div class="avatar">
+                X
+            </div>
+
+            <h3>Xarif</h3>
+
+            <div class="role">
+                Cousin • Best Friend
+            </div>
+
+            <div class="description">
+                Cousin তো বটেই, কিন্তু practically best friend.
+                অনেক কিছু বলার আগেই বুঝে ফেলে।
+                <br><br>
+                <span style="color:#9c97ff;">
+                    Bro is basically part of the management 💀
+                </span>
+            </div>
+
+            <div class="tags">
+                <span>BEST BRO</span>
+                <span>COUSIN</span>
+                <span>DAY ONE</span>
+            </div>
+
+        </div>
+
+
+        <!-- JAIM -->
+
+        <div class="member">
+
+            <div class="avatar">
+                J
+            </div>
+
+            <h3>Jaim</h3>
+
+            <div class="role">
+                Brother • Professional Rival
+            </div>
+
+            <div class="description">
+                আমার ভাই।
+                <br><br>
+                আমরা এত বেশি ঝগড়া করি যে মাঝে মাঝে মনে হয়
+                THE W-এর বদলে WWE খুলে ফেলছি।
+                <br><br>
+                তারপর আবার ঠিকও হয়ে যাই। 😭
+            </div>
+
+            <div class="tags">
+                <span>BROTHER</span>
+                <span>RIVAL</span>
+                <span>WWE</span>
+            </div>
+
+        </div>
+
+
+        <!-- MARZIA -->
+
+        <div class="member">
+
+            <div class="avatar">
+                M
+            </div>
+
+            <h3>Marzia</h3>
+
+            <div class="role">
+                THE W Member
+            </div>
+
+            <div class="description">
+                THE W-এর একটা important part.
+                নিজের একটা আলাদা vibe আছে,
+                আর honestly groupটা ওর presence ছাড়া
+                same feel করত না।
+                <br><br>
+                <span style="color:#ff6fbd;">
+                    That's all I'm saying lol.
+                </span>
+            </div>
+
+            <div class="tags">
+                <span>MEMBER</span>
+                <span>VIBES</span>
+                <span>IMPORTANT</span>
+            </div>
+
+        </div>
+
+
+        <!-- TAHYA -->
+
+        <div class="member">
+
+            <div class="avatar">
+                T
+            </div>
+
+            <h3>Tahya</h3>
+
+            <div class="role">
+                Cousin • Poet
+            </div>
+
+            <div class="description">
+                THE W-এর কবি।
+                <br><br>
+                আমরা যখন random nonsense নিয়ে busy,
+                Tahya meanwhile poetry লিখতেছে।
+                <br><br>
+                <span style="color:#54e5d0;">
+                    Bro actually has the writer arc.
+                </span>
+            </div>
+
+            <div class="tags">
+                <span>COUSIN</span>
+                <span>POET</span>
+                <span>WRITER</span>
+            </div>
+
+        </div>
+
+
+        <!-- ZARIR -->
+
+        <div class="member">
+
+            <div class="avatar">
+                Z
+            </div>
+
+            <h3>Zarir</h3>
+
+            <div class="role">
+                Member • Web Developer • Apparently Goat
+            </div>
+
+            <div class="description">
+                এই websiteটা বানানোর জন্য দায়ী ব্যক্তি।
+                <br><br>
+                কেউ আমাকে এই কাজ দেয় নাই,
+                নিজেই বানাই ফেললাম lol.
+                <br><br>
+                <span style="color:#ffd166;">
+                    Zarir is the goat. Obviously.
+                </span>
+            </div>
+
+            <div class="tags">
+                <span>CODER</span>
+                <span>MEMBER</span>
+                <span>GOAT</span>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- GROUP VIBE -->
+
+<section>
+
+    <h2 class="section-title">
+        THE W আসলে কী?
+    </h2>
+
+    <p class="section-subtitle">
+        Short answer: explain করা কঠিন।
+    </p>
+
+    <div class="vibe">
+
+        <p>
+
+            <strong>THE W</strong> শুধু একটা group না।
+
+            <br><br>
+
+            এখানে আছে
+            <span class="highlight">cousins</span>,
+            <span class="highlight">brothers</span>,
+            friends,
+            random conversations,
+            unnecessary arguments,
+            jokes,
+            আর এমন কিছু inside joke যেগুলার explanation
+            দিলে joke-টাই শেষ হয়ে যাবে।
+
+            <br><br>
+
+            কেউ শান্ত,
+            কেউ chaotic,
+            কেউ কবিতা লিখে,
+            আর কেউ website বানিয়ে বসে আছে। 💀
+
+            <br><br>
+
+            <strong>Basically, this is THE W.</strong>
+
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section>
+
+    <h2 class="section-title">
+        THE W in numbers
+    </h2>
+
+    <p class="section-subtitle">
+        খুব scientific হিসাব। বিশ্বাস না করলে কিছু করার নাই।
+    </p>
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="stat-number">
+                5
+            </div>
+
+            <div class="stat-label">
+                MEMBERS
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-number">
+                ∞
+            </div>
+
+            <div class="stat-label">
+                INSIDE JOKES
+            </div>
+
+        </div>
+
+        <div class="stat">
+
+            <div class="stat-number">
+                0
+            </div>
+
+            <div class="stat-label">
+                NORMAL DAYS
             </div>
 
         </div>
 
     </div>
 
+</section>
 
-    <!-- PASSWORD -->
 
-    <div class="lock-screen" id="passwordScreen">
+<!-- MOMENTS -->
 
-        <div class="lock-card">
+<section id="moments">
 
-            <div class="lock-icon">
-                🔐
+    <h2 class="section-title">
+        W Moments
+    </h2>
+
+    <p class="section-subtitle">
+        কিছু মনে থাকলে পরে এখানে add করিস।
+    </p>
+
+
+    <div class="moments">
+
+
+        <div class="moment">
+
+            <div class="moment-number">
+                W MOMENT 01
             </div>
 
-            <h1>Welcome to THE W</h1>
+            <h3>
+                Zarir vs Jaim
+            </h3>
 
             <p>
-                Human verification passed.
-                Now enter the secret password.
+                দুই ভাই যখন একটা ছোট বিষয় নিয়ে
+                এমনভাবে argue করে যেন national debate চলছে।
             </p>
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter password..."
-            >
+        </div>
 
-            <button
-                class="unlock-btn"
-                onclick="checkPassword()"
-            >
-                Enter THE W
-            </button>
 
-            <div class="error" id="passwordError"></div>
+        <div class="moment">
+
+            <div class="moment-number">
+                W MOMENT 02
+            </div>
+
+            <h3>
+                Xarif being Xarif
+            </h3>
+
+            <p>
+                Best friend + cousin combination.
+                আলাদা explanation লাগে না।
+            </p>
+
+        </div>
+
+
+        <div class="moment">
+
+            <div class="moment-number">
+                W MOMENT 03
+            </div>
+
+            <h3>
+                Tahya's poetry arc
+            </h3>
+
+            <p>
+                Everyone: random nonsense.
+                Tahya: ✍️ কবিতা লিখতেছি ভাই।
+            </p>
+
+        </div>
+
+
+        <div class="moment">
+
+            <div class="moment-number">
+                W MOMENT 04
+            </div>
+
+            <h3>
+                More loading...
+            </h3>
+
+            <p>
+                গল্প এখনো শেষ হয় নাই।
+                Best moments probably এখনও সামনে।
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- SECRET BUTTON -->
+
+    <div class="secret-area">
+
+        <button
+            class="secret-btn"
+            onclick="showSecret()"
+        >
+            THE W member? Click here.
+        </button>
+
+        <div id="secretMessage"></div>
+
+    </div>
+
+
+    <!-- CREDIT -->
+
+    <div class="credit">
+
+        <div class="credit-box">
+
+            <div class="small">
+                DESIGNED & CODED BY
+            </div>
+
+            <h3>
+                ZARIR
+            </h3>
+
+            <p>
+                হ্যাঁ, এবার আমি নিজেই বানাইছি lol.
+            </p>
 
         </div>
 
     </div>
 
+</section>
 
-    <!-- MAIN WEBSITE -->
 
-    <div id="website">
+<!-- FOOTER -->
 
-        <!-- NAV -->
+<footer>
 
-        <nav>
+    <p>
+        <strong>THE W</strong>
+    </p>
 
-            <div class="logo">
-                THE W
-            </div>
+    <p style="margin-top:8px;">
+        Made with chaos, friendship & questionable decisions.
+    </p>
 
-            <div>
-                <a href="#members">Members</a>
-                <a href="#moments">Moments</a>
-            </div>
+    <p style="margin-top:8px;">
+        © 2026 Zarir
+    </p>
 
-        </nav>
+</footer>
 
 
-        <!-- HERO -->
+</div>
 
-        <section class="hero">
 
-            <div class="hero-content">
+<script>
 
-                <div class="tag">
-                    PRIVATE GROUP HUB
-                </div>
+/* ===== HUMAN VERIFICATION ===== */
 
-                <h1>
-                    THE <span>W</span>
-                </h1>
+function verifyHuman(){
 
-                <p>
-                    Five people.<br>
-                    One group.<br>
-                    Way too much chaos.
-                </p>
+    const checkbox =
+        document.getElementById("checkbox");
 
-                <a href="#members" class="enter-btn">
-                    Meet THE W →
-                </a>
+    const loading =
+        document.getElementById("loading");
 
-            </div>
+    checkbox.classList.add("checked");
 
-        </section>
+    checkbox.innerHTML = "✓";
 
+    loading.style.display = "block";
 
-        <!-- MEMBERS -->
+    setTimeout(function(){
 
-        <section id="members">
+        document.getElementById("humanScreen")
+            .style.display = "none";
 
-            <h2 class="section-title">
-                The W Members
-            </h2>
+        document.getElementById("passwordScreen")
+            .style.display = "flex";
 
-            <p class="section-subtitle">
-                The people behind the group.
-            </p>
+    },1200);
 
-            <div class="members">
+}
 
 
-                <div class="member">
+/* ===== PASSWORD ===== */
 
-                    <div class="avatar">
-                        J
-                    </div>
+const secretPassword =
+    "zarir is the goat";
 
-                    <h3>Jarif</h3>
 
-                    <div class="role">
-                        Cousin • Best Friend
-                    </div>
+function checkPassword(){
 
-                    <div class="description">
-                        Basically family and best friend at
-                        the same time. The guy who's always
-                        somehow involved.
-                    </div>
-
-                    <div class="tags">
-                        <span>BEST BRO</span>
-                        <span>COUSIN</span>
-                        <span>DAY ONE</span>
-                    </div>
-
-                </div>
-
-
-                <div class="member">
-
-                    <div class="avatar">
-                        J
-                    </div>
-
-                    <h3>Jaim</h3>
-
-                    <div class="role">
-                        Brother • Rival
-                    </div>
-
-                    <div class="description">
-                        My brother. We fight way too often,
-                        argue about basically everything,
-                        and somehow THE W survives.
-                    </div>
-
-                    <div class="tags">
-                        <span>BROTHER</span>
-                        <span>RIVAL</span>
-                        <span>CHAOS</span>
-                    </div>
-
-                </div>
-
-
-                <div class="member">
-
-                    <div class="avatar">
-                        M
-                    </div>
-
-                    <h3>Marzia</h3>
-
-                    <div class="role">
-                        THE W Member
-                    </div>
-
-                    <div class="description">
-                        One of the people who makes THE W
-                        what it is. Always bringing her own
-                        energy to the group.
-                    </div>
-
-                    <div class="tags">
-                        <span>MEMBER</span>
-                        <span>VIBES</span>
-                        <span>THE W</span>
-                    </div>
-
-                </div>
-
-
-                <div class="member">
-
-                    <div class="avatar">
-                        T
-                    </div>
-
-                    <h3>Tahya</h3>
-
-                    <div class="role">
-                        Cousin • Poet
-                    </div>
-
-                    <div class="description">
-                        The poet of THE W. While everyone
-                        else is causing chaos, Tahya is
-                        probably writing something.
-                    </div>
-
-                    <div class="tags">
-                        <span>COUSIN</span>
-                        <span>POET</span>
-                        <span>WRITER</span>
-                    </div>
-
-                </div>
-
-
-                <div class="member">
-
-                    <div class="avatar">
-                        Z
-                    </div>
-
-                    <h3>Zarir</h3>
-
-                    <div class="role">
-                        Member • Web Developer
-                    </div>
-
-                    <div class="description">
-                        Somehow ended up making this website.
-                        Not sure how this happened, but here we are.
-                    </div>
-
-                    <div class="tags">
-                        <span>MEMBER</span>
-                        <span>CODER</span>
-                        <span>MADE THIS</span>
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </section>
-
-
-        <!-- GROUP VIBE -->
-
-        <section>
-
-            <h2 class="section-title">
-                What is THE W?
-            </h2>
-
-            <p class="section-subtitle">
-                Hard to explain. Easy to recognize.
-            </p>
-
-            <div class="vibe">
-
-                <p>
-
-                    <strong>THE W</strong> isn't really just
-                    a group chat.
-
-                    It's cousins, a brother, friends,
-                    random conversations, arguments,
-                    jokes, and way too many moments that
-                    make absolutely no sense to anyone
-                    outside the group.
-
-                    <br><br>
-
-                    Everyone has a different personality,
-                    which is probably why the group works.
-
-                    <br><br>
-
-                    And somehow, it's still called
-                    <strong>THE W.</strong>
-
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- STATS -->
-
-        <section>
-
-            <h2 class="section-title">
-                THE W in numbers
-            </h2>
-
-            <p class="section-subtitle">
-                Scientifically questionable statistics.
-            </p>
-
-            <div class="stats">
-
-                <div class="stat">
-
-                    <div class="stat-number">
-                        5
-                    </div>
-
-                    <div class="stat-label">
-                        MEMBERS
-                    </div>
-
-                </div>
-
-                <div class="stat">
-
-                    <div class="stat-number">
-                        ∞
-                    </div>
-
-                    <div class="stat-label">
-                        INSIDE JOKES
-                    </div>
-
-                </div>
-
-                <div class="stat">
-
-                    <div class="stat-number">
-                        0
-                    </div>
-
-                    <div class="stat-label">
-                        NORMAL DAYS
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- MOMENTS -->
-
-        <section id="moments">
-
-            <h2 class="section-title">
-                W Moments
-            </h2>
-
-            <p class="section-subtitle">
-                The memories that make the group.
-            </p>
-
-            <div class="moments">
-
-
-                <div class="moment">
-
-                    <div class="moment-number">
-                        W MOMENT 01
-                    </div>
-
-                    <h3>
-                        The arguments
-                    </h3>
-
-                    <p>
-                        Especially when Zarir and Jaim
-                        decide they absolutely cannot
-                        agree on anything.
-                    </p>
-
-                </div>
-
-
-                <div class="moment">
-
-                    <div class="moment-number">
-                        W MOMENT 02
-                    </div>
-
-                    <h3>
-                        Cousin energy
-                    </h3>
-
-                    <p>
-                        Jarif and Tahya proving that
-                        family members can somehow make
-                        the group even more chaotic.
-                    </p>
-
-                </div>
-
-
-                <div class="moment">
-
-                    <div class="moment-number">
-                        W MOMENT 03
-                    </div>
-
-                    <h3>
-                        Random conversations
-                    </h3>
-
-                    <p>
-                        Starts with one normal message.
-                        Somehow ends somewhere completely different.
-                    </p>
-
-                </div>
-
-
-                <div class="moment">
-
-                    <div class="moment-number">
-                        W MOMENT 04
-                    </div>
-
-                    <h3>
-                        More to come
-                    </h3>
-
-                    <p>
-                        The best memories probably haven't
-                        happened yet.
-                    </p>
-
-                </div>
-
-
-            </div>
-
-
-            <div class="secret-area">
-
-                <button
-                    class="secret-btn"
-                    onclick="showSecret()"
-                >
-                    Click if you're actually THE W
-                </button>
-
-                <div id="secretMessage"></div>
-
-            </div>
-
-        </section>
-
-
-        <!-- FOOTER -->
-
-        <footer>
-
-            <p>
-                <strong>THE W</strong>
-            </p>
-
-            <p>
-                Built by Zarir.
-            </p>
-
-            <p>
-                Five members. One W.
-            </p>
-
-        </footer>
-
-    </div>
-
-
-    <script>
-
-        /* ---------- HUMAN VERIFICATION ---------- */
-
-        function verifyHuman() {
-
-            const checkbox =
-                document.getElementById("checkbox");
-
-            const loading =
-                document.getElementById("loading");
-
-            checkbox.classList.add("checked");
-
-            checkbox.innerHTML = "✓";
-
-            loading.style.display = "block";
-
-            setTimeout(function() {
-
-                document.getElementById("humanScreen")
-                    .style.display = "none";
-
-                document.getElementById("passwordScreen")
-                    .style.display = "flex";
-
-            }, 1200);
-
-        }
-
-
-        /* ---------- PASSWORD ---------- */
-
-        const secretPassword =
-            "zarir is the goat";
-
-
-        function checkPassword() {
-
-            const entered =
-                document.getElementById("password")
-                    .value
-                    .trim()
-                    .toLowerCase();
-
-            const error =
-                document.getElementById("passwordError");
-
-
-            if (entered === secretPassword) {
-
-                document.getElementById("passwordScreen")
-                    .style.display = "none";
-
-                document.getElementById("website")
-                    .style.display = "block";
-
-                window.scrollTo(0, 0);
-
-            } else {
-
-                error.innerHTML =
-                    "Wrong password. THE W isn't for everyone.";
-
-            }
-
-        }
-
-
-        /* ---------- SECRET BUTTON ---------- */
-
-        function showSecret() {
-
-            document.getElementById("secretMessage")
-                .innerHTML =
-                "You're officially THE W. Now act normal. You probably won't. 💀";
-
-        }
-
-
-        /* ---------- ENTER KEY ---------- */
-
+    const entered =
         document.getElementById("password")
-            .addEventListener("keydown", function(event) {
+        .value
+        .trim()
+        .toLowerCase();
 
-                if (event.key === "Enter") {
+    const error =
+        document.getElementById("passwordError");
 
-                    checkPassword();
 
-                }
+    if(entered === secretPassword){
 
-            });
+        document.getElementById("passwordScreen")
+            .style.display = "none";
 
-    </script>
+        document.getElementById("website")
+            .style.display = "block";
+
+        window.scrollTo(0,0);
+
+    }else{
+
+        error.innerHTML =
+            "Wrong password 💀 Try again.";
+
+    }
+
+}
+
+
+/* ===== SECRET BUTTON ===== */
+
+function showSecret(){
+
+    document.getElementById("secretMessage")
+        .innerHTML =
+        "Welcome to THE W. এখন normal behave করার চেষ্টা করো. 💀";
+
+}
+
+
+/* ===== ENTER KEY ===== */
+
+document.getElementById("password")
+.addEventListener("keydown",function(event){
+
+    if(event.key === "Enter"){
+        checkPassword();
+    }
+
+});
+
+</script>
 
 </body>
 </html>
