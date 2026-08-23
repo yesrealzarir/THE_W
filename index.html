@@ -1,104 +1,142 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>THE W — Private Hub</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="style.css">
+    <title>THE W</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- Supabase -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        defer
+    ></script>
+
 </head>
+
 
 <body>
 
-<!-- HUMAN VERIFICATION -->
-<div class="lock-screen" id="humanScreen">
 
-    <div class="lock-card">
+<!-- =========================
+     LOGIN
+========================= -->
 
-        <div class="lock-icon">🤖</div>
+<div id="loginScreen" class="auth-screen">
 
-        <h1>Human verification</h1>
+    <div class="auth-card">
 
-        <p>
-            THE W has to make sure you're actually human.
-            <br><br>
-            হ্যাঁ ভাই, এত সহজে ঢুকতে দিচ্ছি না 💀
-        </p>
-
-        <div class="verify-box" onclick="verifyHuman()">
-            <div class="verify-left">
-                <div class="fake-checkbox" id="checkbox"></div>
-                <div class="verify-text">I'm a human</div>
-            </div>
-        </div>
-
-        <div class="loading" id="loading">
-            Checking... একটু দাঁড়াও 👀
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- PASSWORD -->
-<div class="lock-screen" id="passwordScreen">
-
-    <div class="lock-card">
-
-        <div class="lock-icon">🔐</div>
-
-        <h1>Almost there.</h1>
-
-        <p>
-            Human verification passed.
-            <br>
-            এখন আসল পরীক্ষা।
-        </p>
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Secret password..."
-        >
-
-        <button class="unlock-btn" onclick="checkPassword()">
-            Enter THE W
-        </button>
-
-        <div class="error" id="passwordError"></div>
-
-    </div>
-
-</div>
-
-
-<!-- MAIN WEBSITE -->
-<div id="website">
-
-    <nav>
-
-        <div class="logo">
+        <div class="auth-logo">
             THE <span>W</span>
         </div>
 
-        <div class="nav-links">
-            <a href="#members">Members</a>
-            <a href="#moments">Moments</a>
+        <div class="auth-small">
+            PRIVATE MEMBERS AREA
+        </div>
+
+        <h1>
+            Welcome back.
+        </h1>
+
+        <p>
+            Shudhu THE W members er jonno.
+            <br>
+            Random manush dhukte parbe na.
+        </p>
+
+
+        <form id="loginForm">
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                autocomplete="email"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button
+                type="submit"
+                class="main-button"
+            >
+                Enter THE W →
+            </button>
+
+        </form>
+
+
+        <div
+            id="loginError"
+            class="error-message"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     WEBSITE
+========================= -->
+
+<div id="app" class="hidden">
+
+
+    <!-- NAV -->
+
+    <nav>
+
+        <div class="nav-logo">
+            THE <span>W</span>
+        </div>
+
+        <div class="nav-right">
+
+            <span id="currentMember">
+                MEMBER
+            </span>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+            >
+                Logout
+            </button>
+
         </div>
 
     </nav>
 
 
+
     <!-- HERO -->
-    <section class="hero">
 
-        <div class="hero-content">
+    <header class="hero">
 
-            <div class="tag">
-                PRIVATE GROUP HUB
+        <div class="hero-inner">
+
+            <div class="hero-label">
+                PRIVATE • THE W • 2026
             </div>
 
             <h1>
@@ -106,363 +144,571 @@
             </h1>
 
             <p>
-                পাঁচজন মানুষ।<br>
-                অনেক বেশি <strong>chaos</strong>।<br>
-                আর somehow সবকিছু ঠিকই চলছে।
+                Ekta group.
+                Onk gula character.
+                Ar normal thakar kono guarantee nai.
             </p>
 
-            <a href="#members" class="enter-btn">
-                ঢুকেই পড়ো →
+            <a
+                href="#members"
+                class="hero-button"
+            >
+                Meet the W →
             </a>
 
         </div>
 
-    </section>
+    </header>
+
 
 
     <!-- MEMBERS -->
+
     <section id="members">
 
-        <h2 class="section-title">
-            The Members
-        </h2>
+        <div class="section-heading">
 
-        <p class="section-subtitle">
-            যারা মিলে THE W বানাইছে।
-        </p>
-
-        <div class="members">
-
-
-            <!-- XARIF -->
-            <div class="member xarif">
-
-                <div class="avatar">X</div>
-
-                <h3>Xarif</h3>
-
-                <div class="role">
-                    Cousin • Best Friend
+            <div>
+                <div class="section-label">
+                    THE MEMBERS
                 </div>
 
-                <div class="description">
-                    Cousin তো বটেই, কিন্তু practically
-                    best friend.
-                    <br><br>
-                    Bro is basically part of the management 💀
-                </div>
-
-                <div class="tags">
-                    <span>BEST BRO</span>
-                    <span>COUSIN</span>
-                    <span>DAY ONE</span>
-                </div>
-
+                <h2>
+                    The W people.
+                </h2>
             </div>
-
-
-            <!-- JAIM -->
-            <div class="member jaim">
-
-                <div class="avatar">J</div>
-
-                <h3>Jaim</h3>
-
-                <div class="role">
-                    Brother • Professional Rival
-                </div>
-
-                <div class="description">
-                    আমার ভাই।
-                    <br><br>
-                    আমরা এত বেশি ঝগড়া করি যে মাঝে মাঝে
-                    মনে হয় THE W-এর বদলে WWE খুলে ফেলছি।
-                    😭
-                </div>
-
-                <div class="tags">
-                    <span>BROTHER</span>
-                    <span>RIVAL</span>
-                    <span>WWE</span>
-                </div>
-
-            </div>
-
-
-            <!-- MARZIA -->
-            <div class="member marzia">
-
-                <div class="avatar">M</div>
-
-                <h3>Marzia</h3>
-
-                <div class="role">
-                    THE W Member
-                </div>
-
-                <div class="description">
-                    THE W-এর একটা important part.
-                    নিজের একটা আলাদা vibe আছে,
-                    আর groupটা ওর presence ছাড়া
-                    same feel করত না।
-                    <br><br>
-                    That's all I'm saying lol.
-                </div>
-
-                <div class="tags">
-                    <span>MEMBER</span>
-                    <span>VIBES</span>
-                    <span>IMPORTANT</span>
-                </div>
-
-            </div>
-
-
-            <!-- TAHYA -->
-            <div class="member tahya">
-
-                <div class="avatar">T</div>
-
-                <h3>Tahya</h3>
-
-                <div class="role">
-                    Cousin • Poet
-                </div>
-
-                <div class="description">
-                    THE W-এর কবি।
-                    <br><br>
-                    আমরা যখন random nonsense নিয়ে busy,
-                    Tahya meanwhile poetry লিখতেছে।
-                    <br><br>
-                    Bro actually has the writer arc.
-                </div>
-
-                <div class="tags">
-                    <span>COUSIN</span>
-                    <span>POET</span>
-                    <span>WRITER</span>
-                </div>
-
-            </div>
-
-
-            <!-- ZARIR -->
-            <div class="member zarir">
-
-                <div class="avatar">Z</div>
-
-                <h3>Zarir</h3>
-
-                <div class="role">
-                    Member • Web Developer
-                </div>
-
-                <div class="description">
-                    এই websiteটা বানানোর জন্য দায়ী ব্যক্তি।
-                    <br><br>
-                    কেউ আমাকে এই কাজ দেয় নাই,
-                    নিজেই বানাই ফেললাম lol.
-                    <br><br>
-                    Zarir is the goat. Obviously.
-                </div>
-
-                <div class="tags">
-                    <span>CODER</span>
-                    <span>MEMBER</span>
-                    <span>GOAT</span>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- VIBE -->
-    <section>
-
-        <h2 class="section-title">
-            THE W আসলে কী?
-        </h2>
-
-        <p class="section-subtitle">
-            Short answer: explain করা কঠিন।
-        </p>
-
-        <div class="vibe">
 
             <p>
-
-                <strong>THE W</strong> শুধু একটা group না।
-
-                <br><br>
-
-                এখানে আছে
-                <span class="highlight">cousins</span>,
-                <span class="highlight">brothers</span>,
-                friends, random conversations,
-                unnecessary arguments, jokes,
-                আর এমন কিছু inside joke যেগুলার
-                explanation দিলে joke-টাই শেষ হয়ে যাবে।
-
-                <br><br>
-
-                কেউ শান্ত,
-                কেউ chaotic,
-                কেউ কবিতা লিখে,
-                আর কেউ website বানিয়ে বসে আছে। 💀
-
-                <br><br>
-
-                <strong>Basically, this is THE W.</strong>
-
+                Shobar nijer alada vibe.
             </p>
 
         </div>
 
-    </section>
+
+        <div class="members-grid">
 
 
-    <!-- STATS -->
-    <section>
+            <!-- XARIF -->
 
-        <h2 class="section-title">
-            THE W in numbers
-        </h2>
+            <article class="member-card">
 
-        <p class="section-subtitle">
-            খুব scientific হিসাব। বিশ্বাস না করলে কিছু করার নাই।
-        </p>
-
-        <div class="stats">
-
-            <div class="stat">
-                <div class="stat-number">5</div>
-                <div class="stat-label">MEMBERS</div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-number">∞</div>
-                <div class="stat-label">INSIDE JOKES</div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-number">0</div>
-                <div class="stat-label">NORMAL DAYS</div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- MOMENTS -->
-    <section id="moments">
-
-        <h2 class="section-title">
-            W Moments
-        </h2>
-
-        <p class="section-subtitle">
-            কিছু মনে থাকলে পরে এখানে add করিস।
-        </p>
-
-        <div class="moments">
-
-            <div class="moment">
-                <div class="moment-number">W MOMENT 01</div>
-                <h3>Zarir vs Jaim</h3>
-                <p>
-                    দুই ভাই যখন একটা ছোট বিষয় নিয়ে
-                    এমনভাবে argue করে যেন national debate চলছে।
-                </p>
-            </div>
-
-            <div class="moment">
-                <div class="moment-number">W MOMENT 02</div>
-                <h3>Xarif being Xarif</h3>
-                <p>
-                    Best friend + cousin combination.
-                    আলাদা explanation লাগে না।
-                </p>
-            </div>
-
-            <div class="moment">
-                <div class="moment-number">W MOMENT 03</div>
-                <h3>Tahya's poetry arc</h3>
-                <p>
-                    Everyone: random nonsense.
-                    Tahya: ✍️ কবিতা লিখতেছি ভাই।
-                </p>
-            </div>
-
-            <div class="moment">
-                <div class="moment-number">W MOMENT 04</div>
-                <h3>More loading...</h3>
-                <p>
-                    গল্প এখনো শেষ হয় নাই।
-                    Best moments probably এখনও সামনে।
-                </p>
-            </div>
-
-        </div>
-
-
-        <div class="secret-area">
-
-            <button class="secret-btn" onclick="showSecret()">
-                THE W member? Click here.
-            </button>
-
-            <div id="secretMessage"></div>
-
-        </div>
-
-
-        <!-- CREDIT -->
-        <div class="credit">
-
-            <div class="credit-box">
-
-                <div class="small">
-                    DESIGNED & CODED BY
+                <div class="member-number">
+                    01
                 </div>
 
-                <h3>ZARIR</h3>
+                <div class="avatar purple">
+                    X
+                </div>
+
+                <h3>
+                    Xarif
+                </h3>
+
+                <div class="member-role">
+                    THE BROTHER
+                </div>
 
                 <p>
-                    হ্যাঁ, এবার আমি নিজেই বানাইছি lol.
+                    THE W-er ekjon na, basically amar bhai 💀
+                    <br><br>
+                    Cousin holeo relationship ta just
+                    cousin-er moddhe limited na.
+                    Amra milk brothers,
+                    tai bhai bollei beshi accurate.
+                    <br><br>
+                    Random kotha, moja, serious discussion —
+                    shob kichutei somehow ekshathe thaki.
                 </p>
 
-            </div>
+                <div class="tags">
+                    <span>BROTHER</span>
+                    <span>MILK BRO</span>
+                    <span>COUSIN</span>
+                </div>
+
+                <div class="gallery">
+
+                    <div class="gallery-title">
+                        W MOMENTS
+                    </div>
+
+                    <div
+                        class="photo-grid"
+                        id="gallery-xarif"
+                    ></div>
+
+                    <div class="upload-area">
+
+                        <input
+                            type="file"
+                            id="file-xarif"
+                            accept="image/*"
+                        >
+
+                        <input
+                            type="text"
+                            id="caption-xarif"
+                            placeholder="Write a caption..."
+                        >
+
+                        <button
+                            onclick="uploadMemory('xarif')"
+                        >
+                            + Add Memory
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- JAIM -->
+
+            <article class="member-card">
+
+                <div class="member-number">
+                    02
+                </div>
+
+                <div class="avatar orange">
+                    J
+                </div>
+
+                <h3>
+                    Jaim
+                </h3>
+
+                <div class="member-role">
+                    VONDO HUZUR
+                </div>
+
+                <p>
+                    THE W-er nijer ekta character 💀
+                    <br><br>
+                    Amra oke Vondo Huzur bole daki,
+                    ar honestly naamta or sathe besh mile jay lol.
+                    <br><br>
+                    Amader sathe shobshomoy khele na,
+                    shobshomoy group-er moddheo thake na,
+                    but jokhon ashe tokhon amader khela
+                    noshto kore day.
+                </p>
+
+                <div class="tags">
+                    <span>VONDO</span>
+                    <span>HUZUR</span>
+                    <span>BROTHER</span>
+                </div>
+
+                <div class="gallery">
+
+                    <div class="gallery-title">
+                        W MOMENTS
+                    </div>
+
+                    <div
+                        class="photo-grid"
+                        id="gallery-jaim"
+                    ></div>
+
+                    <div class="upload-area">
+
+                        <input
+                            type="file"
+                            id="file-jaim"
+                            accept="image/*"
+                        >
+
+                        <input
+                            type="text"
+                            id="caption-jaim"
+                            placeholder="Write a caption..."
+                        >
+
+                        <button
+                            onclick="uploadMemory('jaim')"
+                        >
+                            + Add Memory
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- MARZIA -->
+
+            <article class="member-card marzia-card">
+
+                <div class="member-number">
+                    03
+                </div>
+
+                <div class="avatar pink">
+                    M
+                </div>
+
+                <div class="important-badge">
+                    IMPORTANT MEMBER
+                </div>
+
+                <h3>
+                    Marzia
+                </h3>
+
+                <div class="member-role">
+                    THE ELDEST
+                </div>
+
+                <p>
+                    THE W-er shobar boro member,
+                    ar group-er ekjon genuinely important person.
+                    <br><br>
+                    Or personality-r moddhe ekta alada
+                    elegance ache — shobshomoy
+                    nijer presence diye noticeable hoye thake.
+                    <br><br>
+                    Group-er moddhe or ekta different role ache,
+                    ar honestly THE W-ke imagine korle
+                    or presence-ta naturally er moddhe chole ashe.
+                    <br><br>
+                    Shudhu member na,
+                    THE W-er ekta important part.
+                    <br><br>
+                    Ar ha, personality-r sathe or beauty-o
+                    ignore korar moto na.
+                </p>
+
+                <div class="tags">
+                    <span>ELDEST</span>
+                    <span>IMPORTANT</span>
+                    <span>ICON</span>
+                </div>
+
+                <div class="gallery">
+
+                    <div class="gallery-title">
+                        MARZIA'S W MOMENTS
+                    </div>
+
+                    <div
+                        class="photo-grid"
+                        id="gallery-marzia"
+                    ></div>
+
+                    <div class="upload-area">
+
+                        <input
+                            type="file"
+                            id="file-marzia"
+                            accept="image/*"
+                        >
+
+                        <input
+                            type="text"
+                            id="caption-marzia"
+                            placeholder="Write a caption..."
+                        >
+
+                        <button
+                            onclick="uploadMemory('marzia')"
+                        >
+                            + Add Memory
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- TAHYA -->
+
+            <article class="member-card">
+
+                <div class="member-number">
+                    04
+                </div>
+
+                <div class="avatar cyan">
+                    T
+                </div>
+
+                <h3>
+                    Tahya
+                </h3>
+
+                <div class="member-role">
+                    THE POET
+                </div>
+
+                <p>
+                    THE W-er official poet ✍️
+                    <br><br>
+                    Amra jokhon shobai random kotha niye
+                    busy, Tahya tokhon poetry niye
+                    boshe thakte pare.
+                    <br><br>
+                    Or writing-er nijer ekta style ache,
+                    ja group-er usual chaos-er moddhe
+                    completely different ekta vibe add kore.
+                </p>
+
+                <div class="tags">
+                    <span>POET</span>
+                    <span>WRITER</span>
+                    <span>COUSIN</span>
+                </div>
+
+                <div class="gallery">
+
+                    <div class="gallery-title">
+                        W MOMENTS
+                    </div>
+
+                    <div
+                        class="photo-grid"
+                        id="gallery-tahya"
+                    ></div>
+
+                    <div class="upload-area">
+
+                        <input
+                            type="file"
+                            id="file-tahya"
+                            accept="image/*"
+                        >
+
+                        <input
+                            type="text"
+                            id="caption-tahya"
+                            placeholder="Write a caption..."
+                        >
+
+                        <button
+                            onclick="uploadMemory('tahya')"
+                        >
+                            + Add Memory
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- ZARIR -->
+
+            <article class="member-card">
+
+                <div class="member-number">
+                    05
+                </div>
+
+                <div class="avatar gold">
+                    Z
+                </div>
+
+                <h3>
+                    Zarir
+                </h3>
+
+                <div class="member-role">
+                    THE GOAT 🐐 (OBVIOUSLY)
+                </div>
+
+                <p>
+                    THE W website-er coding-er pichhone
+                    je lokta boshe ache, shei ami 💀
+                    <br><br>
+                    Kew seriously boleni website banate,
+                    tao somehow boshe banai felchi.
+                    <br><br>
+                    Ekhon member howar sathe sathe
+                    unpaid developer-o hoye gechi lol.
+                    <br><br>
+                    Design, coding, random features —
+                    shobkichur pichhone somehow amar naam ache,
+                    I AM THE GOAT.
+                </p>
+
+                <div class="tags">
+                    <span>CODER</span>
+                    <span>DEVELOPER</span>
+                    <span>GOAT</span>
+                </div>
+
+                <div class="gallery">
+
+                    <div class="gallery-title">
+                        ZARIR'S W MOMENTS
+                    </div>
+
+                    <div
+                        class="photo-grid"
+                        id="gallery-zarir"
+                    ></div>
+
+                    <div class="upload-area">
+
+                        <input
+                            type="file"
+                            id="file-zarir"
+                            accept="image/*"
+                        >
+
+                        <input
+                            type="text"
+                            id="caption-zarir"
+                            placeholder="Write a caption..."
+                        >
+
+                        <button
+                            onclick="uploadMemory('zarir')"
+                        >
+                            + Add Memory
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- TAHMID -->
+
+            <article class="member-card">
+
+                <div class="member-number">
+                    06
+                </div>
+
+                <div class="avatar green">
+                    T
+                </div>
+
+                <h3>
+                    Tahmid
+                </h3>
+
+                <div class="member-role">
+                    NESHAKHOR GAMER
+                </div>
+
+                <p>
+                    THE W-er shobar choto member 💀
+                    <br><br>
+                    FC Mobile-er proti or bhalobasha
+                    alada level-er. Notun boka-boki korleo
+                    FIFA khelbei, ar gas charteo pochondo kore.
+                    <br><br>
+                    FC Mobile khelte khelte kokhon je
+                    onekkhon hoye jay, she nijeo bujhe na 😂
+                    <br><br>
+                    Ar amra jokhon shobai mile fun kori
+                    ba ekshathe kheli, tokhon Tahmid
+                    usually ghumay 💀
+                    <br><br>
+                    Amra: “Tahmid, chol ekshathe kheli!”
+                    <br>
+                    Tahmid: 😴
+                    <br><br>
+                    Tarpor ghum theke uthe abar FC Mobile.
+                </p>
+
+                <div class="tags">
+                    <span>YOUNGEST</span>
+                    <span>FC MOBILE</span>
+                    <span>SLEEPY</span>
+                    <span>GAMER</span>
+                </div>
+
+                <div class="gallery">
+
+                    <div class="gallery-title">
+                        W MOMENTS
+                    </div>
+
+                    <div
+                        class="photo-grid"
+                        id="gallery-tahmid"
+                    ></div>
+
+                    <div class="upload-area">
+
+                        <input
+                            type="file"
+                            id="file-tahmid"
+                            accept="image/*"
+                        >
+
+                        <input
+                            type="text"
+                            id="caption-tahmid"
+                            placeholder="Write a caption..."
+                        >
+
+                        <button
+                            onclick="uploadMemory('tahmid')"
+                        >
+                            + Add Memory
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
 
         </div>
 
     </section>
 
+
+
+    <!-- FOOTER -->
 
     <footer>
 
-        <p>
-            <strong>THE W</strong>
-        </p>
+        <div class="footer-logo">
+            THE W
+        </div>
 
         <p>
-            Made with chaos, friendship & questionable decisions.
+            Built for the people who make THE W.
         </p>
 
-        <p>
-            © 2026 Zarir
-        </p>
+        <div class="credit">
+            Designed & coded by <strong>Zarir</strong>
+        </div>
+
+        <div class="footer-small">
+            Private • 2026
+        </div>
 
     </footer>
+
 
 </div>
 
 
-<script src="script.js"></script>
+<script
+    src="script.js"
+    defer
+></script>
 
 </body>
 </html>
