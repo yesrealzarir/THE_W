@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>THE W — Admin</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #080808;
+            color: white;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-top: 6px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            padding: 11px 18px;
+            font-weight: 700;
+        }
+
+        #logoutBtn {
+            background: #222;
+            color: white;
+        }
+
+        .login-card,
+        .dashboard {
+            background: #111;
+            border: 1px solid #252525;
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .login-card {
+            max-width: 420px;
+            margin: 100px auto;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #080808;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #666;
+        }
+
+        #loginBtn {
+            width: 100%;
+            background: white;
+            color: black;
+        }
+
+        #loginBtn:hover {
+            background: #ddd;
+        }
+
+        .message {
+            margin-top: 15px;
+            color: #aaa;
+        }
+
+        .request {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 0;
+            border-bottom: 1px solid #242424;
+        }
+
+        .request:last-child {
+            border-bottom: none;
+        }
+
+        .email {
+            font-weight: 700;
+        }
+
+        .date {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .approve {
+            background: white;
+            color: black;
+        }
+
+        .reject {
+            background: #222;
+            color: white;
+        }
+
+        .approve:hover {
+            background: #ddd;
+        }
+
+        .reject:hover {
+            background: #333;
+        }
+
+        .empty {
+            color: #777;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 18px;
+            }
+
+            .header {
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .request {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .actions {
+                width: 100%;
+            }
+
+            .actions button {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+
+    <div id="loginSection" class="login-card">
+
+        <h1>THE W Admin</h1>
+
+        <p class="description">
+            Sign in with the authorized admin account.
+        </p>
+
+        <input
+            id="email"
+            type="email"
+            placeholder="Admin email"
+            autocomplete="email"
+        >
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password"
+        >
+
+        <button id="loginBtn">
+            Sign In
+        </button>
+
+        <p id="loginMessage" class="message"></p>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <div
+        id="dashboardSection"
+        class="container"
+        style="display:none;"
+    >
+
+        <div class="header">
+
+            <div>
+                <div class="logo">
+                    THE W
+                </div>
+
+                <div class="subtitle">
+                    Access Request Dashboard
+                </div>
+            </div>
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
+        </div>
+
+
+        <div class="dashboard">
+
+            <h2>
+                Pending Requests
+            </h2>
+
+            <div id="requestsContainer">
+
+                <div class="empty">
+                    Loading requests...
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        /*
+         * ==========================================
+         * SUPABASE CONFIG
+         * ==========================================
+         *
+         * These are PUBLIC browser-side values.
+         *
+         * NEVER put THE_W_ADMIN_SECRET here.
+         */
+
+        const SUPABASE_URL =
+            "https://mtobiuuuvkuhyvwtcouz.supabase.co";
+
+        const SUPABASE_ANON_KEY =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10b2JpdXV1dmt1dmt1dHl2d3Rjb3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTM0OTEsImV4cCI6MjEwMjk4OTQ5MX0.osFVJGr2BiekiaQAFREZ4L1W8AqiaM7O4BcCN2_qbIw";
+
+
+        const supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+
+        /*
+         * ==========================================
+         * ELEMENTS
+         * ==========================================
+         */
+
+        const loginSection =
+            document.getElementById(
+                "loginSection"
+            );
+
+        const dashboardSection =
+            document.getElementById(
+                "dashboardSection"
+            );
+
+        const loginMessage =
+            document.getElementById(
+                "loginMessage"
+            );
+
+        const requestsContainer =
+            document.getElementById(
+                "requestsContainer"
+            );
+
+
+        /*
+         * ==========================================
+         * LOGIN
+         * ==========================================
+         */
+
+        document
+            .getElementById("loginBtn")
+            .addEventListener(
+                "click",
+                login
+            );
+
+
+        async function login() {
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            if (!email || !password) {
+
+                loginMessage.textContent =
+                    "Enter your email and password.";
+
+                return;
+            }
+
+
+            loginMessage.textContent =
+                "Signing in...";
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .auth
+                    .signInWithPassword({
+                        email,
+                        password
+                    });
+
+
+            if (error) {
+
+                loginMessage.textContent =
+                    error.message;
+
+                return;
+            }
+
+
+            loginMessage.textContent = "";
+
+            showDashboard();
+
+        }
+
+
+        /*
+         * ==========================================
+         * SHOW DASHBOARD
+         * ==========================================
+         */
+
+        function showDashboard() {
+
+            loginSection.style.display =
+                "none";
+
+            dashboardSection.style.display =
+                "block";
+
+            loadRequests();
+
+        }
+
+
+        /*
+         * ==========================================
+         * LOAD PENDING REQUESTS
+         * ==========================================
+         */
+
+        async function loadRequests() {
+
+            requestsContainer.innerHTML =
+                '<div class="empty">Loading...</div>';
+
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("access_requests")
+                    .select("*")
+                    .eq("status", "pending")
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                requestsContainer.innerHTML =
+                    `<div class="empty">
+                        ${escapeHtml(
+                            error.message
+                        )}
+                    </div>`;
+
+                return;
+            }
+
+
+            if (
+                !data ||
+                data.length === 0
+            ) {
+
+                requestsContainer.innerHTML =
+                    `<div class="empty">
+                        No pending requests 🎉
+                    </div>`;
+
+                return;
+            }
+
+
+            requestsContainer.innerHTML = "";
+
+
+            data.forEach(
+                request => {
+
+                    const element =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    element.className =
+                        "request";
+
+
+                    element.innerHTML = `
+
+                        <div>
+
+                            <div class="email">
+                                ${escapeHtml(
+                                    request.email
+                                )}
+                            </div>
+
+                            <div class="date">
+                                ${new Date(
+                                    request.created_at
+                                ).toLocaleString()}
+                            </div>
+
+                        </div>
+
+
+                        <div class="actions">
+
+                            <button
+                                class="approve"
+                                onclick="approveRequest('${request.id}')"
+                            >
+                                Approve
+                            </button>
+
+
+                            <button
+                                class="reject"
+                                onclick="rejectRequest('${request.id}')"
+                            >
+                                Reject
+                            </button>
+
+                        </div>
+
+                    `;
+
+
+                    requestsContainer.appendChild(
+                        element
+                    );
+
+                }
+            );
+
+        }
+
+
+        /*
+         * ==========================================
+         * APPROVE
+         * ==========================================
+         */
+
+        async function approveRequest(
+            requestId
+        ) {
+
+            if (
+                !confirm(
+                    "Approve this access request?"
+                )
+            ) {
+                return;
+            }
+
+
+            const {
+                data: {
+                    session
+                }
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
+
+
+            if (!session) {
+
+                alert(
+                    "Your admin session has expired."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${SUPABASE_URL}/functions/v1/approve-access`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${session.access_token}`
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    requestId
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        result.error ||
+                        "Could not approve request."
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    "Approved! Invitation sent."
+                );
+
+
+                loadRequests();
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Could not connect to the approval function."
+                );
+
+            }
+
+        }
+
+
+        /*
+         * ==========================================
+         * REJECT
+         * ==========================================
+         */
+
+        async function rejectRequest(
+            requestId
+        ) {
+
+            if (
+                !confirm(
+                    "Reject this access request?"
+                )
+            ) {
+                return;
+            }
+
+
+            const {
+                data: {
+                    session
+                }
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
+
+
+            if (!session) {
+
+                alert(
+                    "Your admin session has expired."
+                );
+
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${SUPABASE_URL}/functions/v1/reject-access`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "Authorization":
+                                    `Bearer ${session.access_token}`
+                            },
+
+                            body:
+                                JSON.stringify({
+                                    requestId
+                                })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    alert(
+                        result.error ||
+                        "Could not reject request."
+                    );
+
+                    return;
+                }
+
+
+                alert(
+                    "Request rejected."
+                );
+
+
+                loadRequests();
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "Could not connect to the rejection function."
+                );
+
+            }
+
+        }
+
+
+        /*
+         * ==========================================
+         * LOGOUT
+         * ==========================================
+         */
+
+        document
+            .getElementById("logoutBtn")
+            .addEventListener(
+                "click",
+                async () => {
+
+                    await supabaseClient
+                        .auth
+                        .signOut();
+
+
+                    dashboardSection.style.display =
+                        "none";
+
+
+                    loginSection.style.display =
+                        "block";
+
+
+                    loginMessage.textContent = "";
+
+                }
+            );
+
+
+        /*
+         * ==========================================
+         * ESCAPE HTML
+         * ==========================================
+         */
+
+        function escapeHtml(
+            value
+        ) {
+
+            return String(value)
+                .replaceAll(
+                    "&",
+                    "&amp;"
+                )
+                .replaceAll(
+                    "<",
+                    "&lt;"
+                )
+                .replaceAll(
+                    ">",
+                    "&gt;"
+                )
+                .replaceAll(
+                    '"',
+                    "&quot;"
+                )
+                .replaceAll(
+                    "'",
+                    "&#039;"
+                );
+
+        }
+
+
+        /*
+         * ==========================================
+         * CHECK EXISTING SESSION
+         * ==========================================
+         */
+
+        async function checkSession() {
+
+            const {
+                data: {
+                    session
+                }
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
+
+
+            if (session) {
+
+                showDashboard();
+
+            }
+
+        }
+
+
+        checkSession();
+
+    </script>
+
+</body>
+</html>
