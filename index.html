@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -23,15 +21,17 @@
         defer
     ></script>
 
+    <script
+        src="script.js"
+        defer
+    ></script>
 </head>
-
 
 <body>
 
-
-<!-- =========================
+<!-- =========================================
      LOGIN
-========================= -->
+========================================= -->
 
 <div id="loginScreen" class="auth-screen">
 
@@ -54,9 +54,6 @@
             <br>
             Random manush dhukte parbe na.
         </p>
-
-
-        <!-- LOGIN FORM -->
 
         <form id="loginForm">
 
@@ -84,6 +81,17 @@
             </button>
 
         </form>
+
+
+        <!-- FORGOT PASSWORD -->
+
+        <button
+            type="button"
+            id="forgotPasswordButton"
+            class="text-button"
+        >
+            Forgot password?
+        </button>
 
 
         <!-- REQUEST ACCESS -->
@@ -117,8 +125,6 @@
         </div>
 
 
-        <!-- LOGIN ERROR -->
-
         <div
             id="loginError"
             class="error-message"
@@ -129,10 +135,9 @@
 </div>
 
 
-
-<!-- =========================
+<!-- =========================================
      RESET PASSWORD
-========================= -->
+========================================= -->
 
 <div
     id="resetPasswordScreen"
@@ -157,9 +162,6 @@
             Enter your new THE W password below.
         </p>
 
-
-        <!-- RESET PASSWORD FORM -->
-
         <form id="resetPasswordForm">
 
             <input
@@ -167,6 +169,7 @@
                 id="newPassword"
                 placeholder="New password"
                 autocomplete="new-password"
+                minlength="6"
                 required
             >
 
@@ -175,6 +178,7 @@
                 id="confirmPassword"
                 placeholder="Confirm new password"
                 autocomplete="new-password"
+                minlength="6"
                 required
             >
 
@@ -187,6 +191,13 @@
 
         </form>
 
+        <button
+            type="button"
+            id="backToLoginButton"
+            class="text-button"
+        >
+            ← Back to login
+        </button>
 
         <div
             id="resetMessage"
@@ -198,20 +209,16 @@
 </div>
 
 
-
-<!-- =========================
+<!-- =========================================
      WEBSITE
-========================= -->
+========================================= -->
 
 <div
     id="app"
     class="hidden"
 >
 
-
-    <!-- =========================
-         NAVIGATION
-    ========================= -->
+    <!-- NAV -->
 
     <nav>
 
@@ -237,12 +244,11 @@
     </nav>
 
 
-
-    <!-- =========================
-         HERO
-    ========================= -->
+    <!-- HERO -->
 
     <header class="hero">
+
+        <div class="hero-glow"></div>
 
         <div class="hero-inner">
 
@@ -272,10 +278,7 @@
     </header>
 
 
-
-    <!-- =========================
-         MEMBERS
-    ========================= -->
+    <!-- MEMBERS -->
 
     <section id="members">
 
@@ -303,9 +306,9 @@
         <div class="members-grid">
 
 
-            <!-- =========================
+            <!-- =================================
                  XARIF
-            ========================= -->
+            ================================== -->
 
             <article class="member-card">
 
@@ -328,11 +331,13 @@
                 <p>
                     THE W-er ekjon na, basically amar bhai 💀
                     <br><br>
+
                     Cousin holeo relationship ta just
                     cousin-er moddhe limited na.
                     Amra milk brothers,
                     tai bhai bollei beshi accurate.
                     <br><br>
+
                     Random kotha, moja, serious discussion —
                     shob kichutei somehow ekshathe thaki.
                 </p>
@@ -342,9 +347,6 @@
                     <span>MILK BRO</span>
                     <span>COUSIN</span>
                 </div>
-
-
-                <!-- GALLERY -->
 
                 <div class="gallery">
 
@@ -356,9 +358,6 @@
                         class="photo-grid"
                         id="gallery-xarif"
                     ></div>
-
-
-                    <!-- UPLOAD -->
 
                     <div class="upload-area">
 
@@ -372,6 +371,7 @@
                             type="text"
                             id="caption-xarif"
                             placeholder="Write a caption..."
+                            maxlength="200"
                         >
 
                         <button
@@ -388,10 +388,9 @@
             </article>
 
 
-
-            <!-- =========================
+            <!-- =================================
                  JAIM
-            ========================= -->
+            ================================== -->
 
             <article class="member-card">
 
@@ -414,9 +413,11 @@
                 <p>
                     THE W-er nijer ekta character 💀
                     <br><br>
+
                     Amra oke Vondo Huzur bole daki,
                     ar honestly naamta or sathe besh mile jay lol.
                     <br><br>
+
                     Amader sathe shobshomoy khele na,
                     shobshomoy group-er moddheo thake na,
                     but jokhon ashe tokhon amader khela
@@ -428,9 +429,6 @@
                     <span>HUZUR</span>
                     <span>BROTHER</span>
                 </div>
-
-
-                <!-- GALLERY -->
 
                 <div class="gallery">
 
@@ -455,6 +453,7 @@
                             type="text"
                             id="caption-jaim"
                             placeholder="Write a caption..."
+                            maxlength="200"
                         >
 
                         <button
@@ -471,10 +470,9 @@
             </article>
 
 
-
-            <!-- =========================
+            <!-- =================================
                  MARZIA
-            ========================= -->
+            ================================== -->
 
             <article class="member-card marzia-card">
 
@@ -502,19 +500,19 @@
                     THE W-er shobar boro member,
                     ar group-er ekjon genuinely important person.
                     <br><br>
+
                     Or personality-r moddhe ekta alada
                     elegance ache — shobshomoy
                     nijer presence diye noticeable hoye thake.
                     <br><br>
+
                     Group-er moddhe or ekta different role ache,
                     ar honestly THE W-ke imagine korle
                     or presence-ta naturally er moddhe chole ashe.
                     <br><br>
+
                     Shudhu member na,
                     THE W-er ekta important part.
-                    <br><br>
-                    Ar ha, personality-r sathe or beauty-o
-                    ignore korar moto na.
                 </p>
 
                 <div class="tags">
@@ -522,9 +520,6 @@
                     <span>IMPORTANT</span>
                     <span>ICON</span>
                 </div>
-
-
-                <!-- GALLERY -->
 
                 <div class="gallery">
 
@@ -549,6 +544,7 @@
                             type="text"
                             id="caption-marzia"
                             placeholder="Write a caption..."
+                            maxlength="200"
                         >
 
                         <button
@@ -565,10 +561,9 @@
             </article>
 
 
-
-            <!-- =========================
+            <!-- =================================
                  TAHYA
-            ========================= -->
+            ================================== -->
 
             <article class="member-card">
 
@@ -591,10 +586,12 @@
                 <p>
                     THE W-er official poet ✍️
                     <br><br>
+
                     Amra jokhon shobai random kotha niye
                     busy, Tahya tokhon poetry niye
                     boshe thakte pare.
                     <br><br>
+
                     Or writing-er nijer ekta style ache,
                     ja group-er usual chaos-er moddhe
                     completely different ekta vibe add kore.
@@ -605,9 +602,6 @@
                     <span>WRITER</span>
                     <span>COUSIN</span>
                 </div>
-
-
-                <!-- GALLERY -->
 
                 <div class="gallery">
 
@@ -632,6 +626,7 @@
                             type="text"
                             id="caption-tahya"
                             placeholder="Write a caption..."
+                            maxlength="200"
                         >
 
                         <button
@@ -648,10 +643,9 @@
             </article>
 
 
-
-            <!-- =========================
+            <!-- =================================
                  ZARIR
-            ========================= -->
+            ================================== -->
 
             <article class="member-card">
 
@@ -668,21 +662,26 @@
                 </h3>
 
                 <div class="member-role">
-                    THE GOAT 🐐 (OBVIOUSLY)
+                    THE GOAT 🐐
                 </div>
 
                 <p>
                     THE W website-er coding-er pichhone
                     je lokta boshe ache, shei ami 💀
                     <br><br>
+
                     Kew seriously boleni website banate,
                     tao somehow boshe banai felchi.
                     <br><br>
+
                     Ekhon member howar sathe sathe
                     unpaid developer-o hoye gechi lol.
                     <br><br>
+
                     Design, coding, random features —
-                    shobkichur pichhone somehow amar naam ache,
+                    shobkichur pichhone somehow amar naam ache.
+                    <br><br>
+
                     I AM THE GOAT.
                 </p>
 
@@ -691,9 +690,6 @@
                     <span>DEVELOPER</span>
                     <span>GOAT</span>
                 </div>
-
-
-                <!-- GALLERY -->
 
                 <div class="gallery">
 
@@ -718,6 +714,7 @@
                             type="text"
                             id="caption-zarir"
                             placeholder="Write a caption..."
+                            maxlength="200"
                         >
 
                         <button
@@ -734,10 +731,9 @@
             </article>
 
 
-
-            <!-- =========================
+            <!-- =================================
                  TAHMID
-            ========================= -->
+            ================================== -->
 
             <article class="member-card">
 
@@ -760,21 +756,25 @@
                 <p>
                     THE W-er shobar choto member 💀
                     <br><br>
+
                     FC Mobile-er proti or bhalobasha
-                    alada level-er. Notun boka-boki korleo
-                    FIFA khelbei, ar gas charteo pochondo kore.
+                    alada level-er.
                     <br><br>
+
                     FC Mobile khelte khelte kokhon je
                     onekkhon hoye jay, she nijeo bujhe na 😂
                     <br><br>
+
                     Ar amra jokhon shobai mile fun kori
                     ba ekshathe kheli, tokhon Tahmid
                     usually ghumay 💀
                     <br><br>
+
                     Amra: “Tahmid, chol ekshathe kheli!”
                     <br>
                     Tahmid: 😴
                     <br><br>
+
                     Tarpor ghum theke uthe abar FC Mobile.
                 </p>
 
@@ -784,9 +784,6 @@
                     <span>SLEEPY</span>
                     <span>GAMER</span>
                 </div>
-
-
-                <!-- GALLERY -->
 
                 <div class="gallery">
 
@@ -811,6 +808,7 @@
                             type="text"
                             id="caption-tahmid"
                             placeholder="Write a caption..."
+                            maxlength="200"
                         >
 
                         <button
@@ -826,16 +824,12 @@
 
             </article>
 
-
         </div>
 
     </section>
 
 
-
-    <!-- =========================
-         FOOTER
-    ========================= -->
+    <!-- FOOTER -->
 
     <footer>
 
@@ -848,7 +842,7 @@
         </p>
 
         <div class="credit">
-            Designed &amp; coded by <strong>Zarir</strong>
+            Designed & coded by <strong>Zarir</strong>
         </div>
 
         <div class="footer-small">
@@ -857,20 +851,7 @@
 
     </footer>
 
-
 </div>
-
-
-
-<!-- =========================
-     JAVASCRIPT
-========================= -->
-
-<script
-    src="script.js"
-    defer
-></script>
-
 
 </body>
 </html>
