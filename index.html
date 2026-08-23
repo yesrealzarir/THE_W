@@ -56,6 +56,8 @@
         </p>
 
 
+        <!-- LOGIN FORM -->
+
         <form id="loginForm">
 
             <input
@@ -82,52 +84,40 @@
             </button>
 
         </form>
-                <button
-            type="submit"
-            class="main-button"
-        >
-            Enter THE W →
-        </button>
-
-    </form>
 
 
-    <!-- REQUEST ACCESS -->
+        <!-- REQUEST ACCESS -->
 
-    <div class="access-request">
+        <div class="access-request">
 
-        <div class="access-divider">
-            NOT A MEMBER?
+            <div class="access-divider">
+                NOT A MEMBER?
+            </div>
+
+            <input
+                type="email"
+                id="requestEmail"
+                placeholder="Enter your Gmail"
+                autocomplete="email"
+            >
+
+            <button
+                type="button"
+                id="requestAccessButton"
+                class="secondary-button"
+            >
+                Request Access
+            </button>
+
+            <div
+                id="requestMessage"
+                class="request-message"
+            ></div>
+
         </div>
 
-        <input
-            type="email"
-            id="requestEmail"
-            placeholder="Enter your Gmail"
-            autocomplete="email"
-        >
 
-        <button
-            type="button"
-            id="requestAccessButton"
-            class="secondary-button"
-        >
-            Request Access
-        </button>
-
-        <div
-            id="requestMessage"
-            class="request-message"
-        ></div>
-
-    </div>
-
-
-    <div
-        id="loginError"
-        class="error-message"
-    ></div>
-
+        <!-- LOGIN ERROR -->
 
         <div
             id="loginError"
@@ -141,13 +131,87 @@
 
 
 <!-- =========================
+     RESET PASSWORD
+========================= -->
+
+<div
+    id="resetPasswordScreen"
+    class="auth-screen hidden"
+>
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            THE <span>W</span>
+        </div>
+
+        <div class="auth-small">
+            PASSWORD RECOVERY
+        </div>
+
+        <h1>
+            Set a new password.
+        </h1>
+
+        <p>
+            Enter your new THE W password below.
+        </p>
+
+
+        <!-- RESET PASSWORD FORM -->
+
+        <form id="resetPasswordForm">
+
+            <input
+                type="password"
+                id="newPassword"
+                placeholder="New password"
+                autocomplete="new-password"
+                required
+            >
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm new password"
+                autocomplete="new-password"
+                required
+            >
+
+            <button
+                type="submit"
+                class="main-button"
+            >
+                Update Password →
+            </button>
+
+        </form>
+
+
+        <div
+            id="resetMessage"
+            class="error-message"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
      WEBSITE
 ========================= -->
 
-<div id="app" class="hidden">
+<div
+    id="app"
+    class="hidden"
+>
 
 
-    <!-- NAV -->
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
 
     <nav>
 
@@ -174,7 +238,9 @@
 
 
 
-    <!-- HERO -->
+    <!-- =========================
+         HERO
+    ========================= -->
 
     <header class="hero">
 
@@ -207,13 +273,16 @@
 
 
 
-    <!-- MEMBERS -->
+    <!-- =========================
+         MEMBERS
+    ========================= -->
 
     <section id="members">
 
         <div class="section-heading">
 
             <div>
+
                 <div class="section-label">
                     THE MEMBERS
                 </div>
@@ -221,6 +290,7 @@
                 <h2>
                     The W people.
                 </h2>
+
             </div>
 
             <p>
@@ -233,7 +303,9 @@
         <div class="members-grid">
 
 
-            <!-- XARIF -->
+            <!-- =========================
+                 XARIF
+            ========================= -->
 
             <article class="member-card">
 
@@ -271,6 +343,9 @@
                     <span>COUSIN</span>
                 </div>
 
+
+                <!-- GALLERY -->
+
                 <div class="gallery">
 
                     <div class="gallery-title">
@@ -281,6 +356,9 @@
                         class="photo-grid"
                         id="gallery-xarif"
                     ></div>
+
+
+                    <!-- UPLOAD -->
 
                     <div class="upload-area">
 
@@ -297,6 +375,7 @@
                         >
 
                         <button
+                            type="button"
                             onclick="uploadMemory('xarif')"
                         >
                             + Add Memory
@@ -310,7 +389,9 @@
 
 
 
-            <!-- JAIM -->
+            <!-- =========================
+                 JAIM
+            ========================= -->
 
             <article class="member-card">
 
@@ -348,6 +429,9 @@
                     <span>BROTHER</span>
                 </div>
 
+
+                <!-- GALLERY -->
+
                 <div class="gallery">
 
                     <div class="gallery-title">
@@ -374,6 +458,7 @@
                         >
 
                         <button
+                            type="button"
                             onclick="uploadMemory('jaim')"
                         >
                             + Add Memory
@@ -387,7 +472,9 @@
 
 
 
-            <!-- MARZIA -->
+            <!-- =========================
+                 MARZIA
+            ========================= -->
 
             <article class="member-card marzia-card">
 
@@ -436,6 +523,9 @@
                     <span>ICON</span>
                 </div>
 
+
+                <!-- GALLERY -->
+
                 <div class="gallery">
 
                     <div class="gallery-title">
@@ -462,6 +552,7 @@
                         >
 
                         <button
+                            type="button"
                             onclick="uploadMemory('marzia')"
                         >
                             + Add Memory
@@ -475,7 +566,9 @@
 
 
 
-            <!-- TAHYA -->
+            <!-- =========================
+                 TAHYA
+            ========================= -->
 
             <article class="member-card">
 
@@ -513,6 +606,9 @@
                     <span>COUSIN</span>
                 </div>
 
+
+                <!-- GALLERY -->
+
                 <div class="gallery">
 
                     <div class="gallery-title">
@@ -539,6 +635,7 @@
                         >
 
                         <button
+                            type="button"
                             onclick="uploadMemory('tahya')"
                         >
                             + Add Memory
@@ -552,7 +649,9 @@
 
 
 
-            <!-- ZARIR -->
+            <!-- =========================
+                 ZARIR
+            ========================= -->
 
             <article class="member-card">
 
@@ -593,6 +692,9 @@
                     <span>GOAT</span>
                 </div>
 
+
+                <!-- GALLERY -->
+
                 <div class="gallery">
 
                     <div class="gallery-title">
@@ -619,6 +721,7 @@
                         >
 
                         <button
+                            type="button"
                             onclick="uploadMemory('zarir')"
                         >
                             + Add Memory
@@ -632,7 +735,9 @@
 
 
 
-            <!-- TAHMID -->
+            <!-- =========================
+                 TAHMID
+            ========================= -->
 
             <article class="member-card">
 
@@ -680,6 +785,9 @@
                     <span>GAMER</span>
                 </div>
 
+
+                <!-- GALLERY -->
+
                 <div class="gallery">
 
                     <div class="gallery-title">
@@ -706,6 +814,7 @@
                         >
 
                         <button
+                            type="button"
                             onclick="uploadMemory('tahmid')"
                         >
                             + Add Memory
@@ -724,7 +833,9 @@
 
 
 
-    <!-- FOOTER -->
+    <!-- =========================
+         FOOTER
+    ========================= -->
 
     <footer>
 
@@ -737,7 +848,7 @@
         </p>
 
         <div class="credit">
-            Designed & coded by <strong>Zarir</strong>
+            Designed &amp; coded by <strong>Zarir</strong>
         </div>
 
         <div class="footer-small">
@@ -750,10 +861,16 @@
 </div>
 
 
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
 <script
     src="script.js"
     defer
 ></script>
+
 
 </body>
 </html>
