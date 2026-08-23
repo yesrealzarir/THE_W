@@ -7,15 +7,15 @@ const SUPABASE_URL =
     "https://mtobiuuuvkuhyvwtcouz.supabase.co";
 
 const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10b2JpdXV1dmt1aHl2d3Rjb3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTM0OTEsImV4cCI6MjEwMjk4OTQ5MX0.osFVJGr2BiekiaQAFREZ4L1W8AqiaM7O4BcCN2_qbIw";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10b2JpdXV1dmt1d3Rjb3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTM0OTEsImV4cCI6MjEwMjk4OTQ5MX0.osFVJGr2BiekiaQAFREZ4L1W8AqiaM7O4BcCN2_qbIw";
 
 
 /* =========================================
-   ACCESS REQUEST FUNCTION
+   ACCESS REQUEST EDGE FUNCTION
 ========================================= */
 
 const ACCESS_REQUEST_URL =
-    "https://mtobiuuuvkuhyvwtcouz.supabase.co/functions/v1/access-request";
+    `${SUPABASE_URL}/functions/v1/access-request`;
 
 
 /* =========================================
@@ -26,19 +26,17 @@ let supabaseClient;
 
 
 /* =========================================
-   MEMBER NAMES
+   MEMBERS
 ========================================= */
 
-const members = {
-
-    xarif: "X",
-    jaim: "J",
-    marzia: "M",
-    tahya: "T",
-    zarir: "Z",
-    tahmid: "T"
-
-};
+const galleries = [
+    "xarif",
+    "jaim",
+    "marzia",
+    "tahya",
+    "zarir",
+    "tahmid"
+];
 
 
 /* =========================================
@@ -47,9 +45,16 @@ const members = {
 
 window.addEventListener(
     "DOMContentLoaded",
-    async function () {
+    async () => {
 
-        /* Create Supabase client */
+        if (!window.supabase) {
+            console.error(
+                "Supabase library did not load."
+            );
+
+            return;
+        }
+
 
         supabaseClient =
             window.supabase.createClient(
@@ -58,66 +63,137 @@ window.addEventListener(
             );
 
 
-        /* Check existing login */
+        setupEventListeners();
+
 
         await checkSession();
 
-
-        /* Login */
-
-        const loginForm =
-            document.getElementById(
-                "loginForm"
-            );
-
-
-        if (loginForm) {
-
-            loginForm.addEventListener(
-                "submit",
-                login
-            );
-
-        }
-
-
-        /* Logout */
-
-        const logoutButton =
-            document.getElementById(
-                "logoutButton"
-            );
-
-
-        if (logoutButton) {
-
-            logoutButton.addEventListener(
-                "click",
-                logout
-            );
-
-        }
-
-
-        /* Request Access */
-
-        const requestAccessButton =
-            document.getElementById(
-                "requestAccessButton"
-            );
-
-
-        if (requestAccessButton) {
-
-            requestAccessButton.addEventListener(
-                "click",
-                requestAccess
-            );
-
-        }
-
     }
 );
+
+
+/* =========================================
+   EVENT LISTENERS
+========================================= */
+
+function setupEventListeners() {
+
+    const loginForm =
+        document.getElementById(
+            "loginForm"
+        );
+
+    if (loginForm) {
+        loginForm.addEventListener(
+            "submit",
+            login
+        );
+    }
+
+
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
+
+    if (logoutButton) {
+        logoutButton.addEventListener(
+            "click",
+            logout
+        );
+    }
+
+
+    const requestAccessButton =
+        document.getElementById(
+            "requestAccessButton"
+        );
+
+    if (requestAccessButton) {
+        requestAccessButton.addEventListener(
+            "click",
+            requestAccess
+        );
+    }
+
+
+    const forgotPasswordButton =
+        document.getElementById(
+            "forgotPasswordButton"
+        );
+
+    if (forgotPasswordButton) {
+        forgotPasswordButton.addEventListener(
+            "click",
+            sendPasswordReset
+        );
+    }
+
+
+    const resetPasswordForm =
+        document.getElementById(
+            "resetPasswordForm"
+        );
+
+    if (resetPasswordForm) {
+        resetPasswordForm.addEventListener(
+            "submit",
+            updatePassword
+        );
+    }
+
+
+    const backToLoginButton =
+        document.getElementById(
+            "backToLoginButton"
+        );
+
+    if (backToLoginButton) {
+        backToLoginButton.addEventListener(
+            "click",
+            showLogin
+        );
+    }
+
+
+    supabaseClient.auth.onAuthStateChange(
+        async (event, session) => {
+
+            if (
+                event === "PASSWORD_RECOVERY"
+            ) {
+
+                showResetPassword();
+
+                return;
+            }
+
+
+            if (
+                event === "SIGNED_OUT"
+            ) {
+
+                showLogin();
+
+                return;
+            }
+
+
+            if (
+                session &&
+                event === "SIGNED_IN"
+            ) {
+
+                showApp(
+                    session.user
+                );
+
+            }
+
+        }
+    );
+
+}
 
 
 /* =========================================
@@ -133,15 +209,24 @@ async function checkSession() {
         await supabaseClient.auth.getSession();
 
 
-    if (
-        error ||
-        !data.session
-    ) {
+    if (error) {
+
+        console.error(
+            "Session error:",
+            error
+        );
 
         showLogin();
 
         return;
+    }
 
+
+    if (!data.session) {
+
+        showLogin();
+
+        return;
     }
 
 
@@ -161,23 +246,27 @@ async function login(event) {
     event.preventDefault();
 
 
-    const email =
-        document
-            .getElementById("email")
-            .value
-            .trim();
+    const emailInput =
+        document.getElementById(
+            "email"
+        );
 
-
-    const password =
-        document
-            .getElementById("password")
-            .value;
-
+    const passwordInput =
+        document.getElementById(
+            "password"
+        );
 
     const errorBox =
         document.getElementById(
             "loginError"
         );
+
+
+    const email =
+        emailInput.value.trim();
+
+    const password =
+        passwordInput.value;
 
 
     errorBox.textContent =
@@ -190,9 +279,8 @@ async function login(event) {
     } =
         await supabaseClient.auth.signInWithPassword({
 
-            email: email,
-
-            password: password
+            email,
+            password
 
         });
 
@@ -209,7 +297,6 @@ async function login(event) {
             "Login failed. Email/password check koro.";
 
         return;
-
     }
 
 
@@ -218,6 +305,220 @@ async function login(event) {
 
     showApp(
         data.user
+    );
+
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+async function sendPasswordReset() {
+
+    const emailInput =
+        document.getElementById(
+            "email"
+        );
+
+    const errorBox =
+        document.getElementById(
+            "loginError"
+        );
+
+
+    const email =
+        emailInput.value.trim();
+
+
+    if (!email) {
+
+        errorBox.textContent =
+            "Age tomar email address dao.";
+
+        emailInput.focus();
+
+        return;
+    }
+
+
+    errorBox.textContent =
+        "Sending password reset email...";
+
+
+    const redirectUrl =
+        `${window.location.origin}${window.location.pathname}`;
+
+
+    const {
+        error
+    } =
+        await supabaseClient.auth.resetPasswordForEmail(
+            email,
+            {
+                redirectTo: redirectUrl
+            }
+        );
+
+
+    if (error) {
+
+        console.error(
+            "Password reset error:",
+            error
+        );
+
+
+        errorBox.textContent =
+            error.message;
+
+        return;
+    }
+
+
+    errorBox.textContent =
+        "Password reset link sent. Email check koro.";
+
+}
+
+
+/* =========================================
+   SHOW RESET PASSWORD
+========================================= */
+
+function showResetPassword() {
+
+    const loginScreen =
+        document.getElementById(
+            "loginScreen"
+        );
+
+    const resetScreen =
+        document.getElementById(
+            "resetPasswordScreen"
+        );
+
+    const app =
+        document.getElementById(
+            "app"
+        );
+
+
+    loginScreen.classList.add(
+        "hidden"
+    );
+
+    app.classList.add(
+        "hidden"
+    );
+
+    resetScreen.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+/* =========================================
+   UPDATE PASSWORD
+========================================= */
+
+async function updatePassword(event) {
+
+    event.preventDefault();
+
+
+    const newPassword =
+        document.getElementById(
+            "newPassword"
+        ).value;
+
+    const confirmPassword =
+        document.getElementById(
+            "confirmPassword"
+        ).value;
+
+    const message =
+        document.getElementById(
+            "resetMessage"
+        );
+
+
+    if (
+        newPassword.length < 6
+    ) {
+
+        message.textContent =
+            "Password must be at least 6 characters.";
+
+        return;
+    }
+
+
+    if (
+        newPassword !==
+        confirmPassword
+    ) {
+
+        message.textContent =
+            "Passwords do not match.";
+
+        return;
+    }
+
+
+    message.textContent =
+        "Updating password...";
+
+
+    const {
+        error
+    } =
+        await supabaseClient.auth.updateUser({
+
+            password:
+                newPassword
+
+        });
+
+
+    if (error) {
+
+        console.error(
+            "Update password error:",
+            error
+        );
+
+
+        message.textContent =
+            error.message;
+
+        return;
+    }
+
+
+    message.textContent =
+        "Password updated successfully!";
+
+
+    document.getElementById(
+        "newPassword"
+    ).value = "";
+
+    document.getElementById(
+        "confirmPassword"
+    ).value = "";
+
+
+    setTimeout(
+        async () => {
+
+            await supabaseClient.auth.signOut();
+
+            showLogin();
+
+        },
+        1500
     );
 
 }
@@ -234,12 +535,10 @@ async function requestAccess() {
             "requestEmail"
         );
 
-
     const message =
         document.getElementById(
             "requestMessage"
         );
-
 
     const button =
         document.getElementById(
@@ -247,26 +546,9 @@ async function requestAccess() {
         );
 
 
-    if (
-        !emailInput ||
-        !message ||
-        !button
-    ) {
-
-        console.error(
-            "Request Access elements not found."
-        );
-
-        return;
-
-    }
-
-
     const email =
         emailInput.value.trim();
 
-
-    /* Validate email */
 
     if (!email) {
 
@@ -274,27 +556,25 @@ async function requestAccess() {
             "Gmail address dao.";
 
         return;
-
     }
 
 
-    if (!email.includes("@")) {
+    if (
+        !email.includes("@") ||
+        !email.includes(".")
+    ) {
 
         message.textContent =
             "Valid email address dao.";
 
         return;
-
     }
 
-
-    /* Disable button */
 
     button.disabled = true;
 
     button.textContent =
         "Sending...";
-
 
     message.textContent = "";
 
@@ -309,17 +589,13 @@ async function requestAccess() {
                     method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body:
                         JSON.stringify({
-
-                            email: email
-
+                            email
                         })
 
                 }
@@ -340,8 +616,6 @@ async function requestAccess() {
         }
 
 
-        /* Function returned an error */
-
         if (!response.ok) {
 
             throw new Error(
@@ -351,8 +625,6 @@ async function requestAccess() {
 
         }
 
-
-        /* Success */
 
         message.textContent =
             "Request sent! Wait for approval.";
@@ -370,12 +642,10 @@ async function requestAccess() {
 
         message.textContent =
             error.message ||
-            "Could not send request. Try again later.";
+            "Could not send request.";
 
     }
 
-
-    /* Enable button again */
 
     button.disabled = false;
 
@@ -396,6 +666,10 @@ function showLogin() {
             "loginScreen"
         );
 
+    const resetScreen =
+        document.getElementById(
+            "resetPasswordScreen"
+        );
 
     const app =
         document.getElementById(
@@ -403,22 +677,17 @@ function showLogin() {
         );
 
 
-    if (loginScreen) {
+    loginScreen.classList.remove(
+        "hidden"
+    );
 
-        loginScreen.classList.remove(
-            "hidden"
-        );
+    resetScreen.classList.add(
+        "hidden"
+    );
 
-    }
-
-
-    if (app) {
-
-        app.classList.add(
-            "hidden"
-        );
-
-    }
+    app.classList.add(
+        "hidden"
+    );
 
 }
 
@@ -434,6 +703,10 @@ async function showApp(user) {
             "loginScreen"
         );
 
+    const resetScreen =
+        document.getElementById(
+            "resetPasswordScreen"
+        );
 
     const app =
         document.getElementById(
@@ -441,22 +714,17 @@ async function showApp(user) {
         );
 
 
-    if (loginScreen) {
+    loginScreen.classList.add(
+        "hidden"
+    );
 
-        loginScreen.classList.add(
-            "hidden"
-        );
+    resetScreen.classList.add(
+        "hidden"
+    );
 
-    }
-
-
-    if (app) {
-
-        app.classList.remove(
-            "hidden"
-        );
-
-    }
+    app.classList.remove(
+        "hidden"
+    );
 
 
     const currentMember =
@@ -498,7 +766,6 @@ async function logout() {
         );
 
         return;
-
     }
 
 
@@ -514,11 +781,13 @@ async function logout() {
 async function uploadMemory(member) {
 
     const {
-        data: {
-            user
-        }
+        data: userData
     } =
         await supabaseClient.auth.getUser();
+
+
+    const user =
+        userData.user;
 
 
     if (!user) {
@@ -528,7 +797,6 @@ async function uploadMemory(member) {
         );
 
         return;
-
     }
 
 
@@ -536,7 +804,6 @@ async function uploadMemory(member) {
         document.getElementById(
             "file-" + member
         );
-
 
     const captionInput =
         document.getElementById(
@@ -554,13 +821,11 @@ async function uploadMemory(member) {
         );
 
         return;
-
     }
 
 
     const file =
         fileInput.files[0];
-
 
     const caption =
         captionInput.value.trim();
@@ -573,7 +838,6 @@ async function uploadMemory(member) {
         );
 
         return;
-
     }
 
 
@@ -584,7 +848,6 @@ async function uploadMemory(member) {
         );
 
         return;
-
     }
 
 
@@ -599,7 +862,6 @@ async function uploadMemory(member) {
         );
 
         return;
-
     }
 
 
@@ -613,7 +875,6 @@ async function uploadMemory(member) {
         );
 
         return;
-
     }
 
 
@@ -625,22 +886,14 @@ async function uploadMemory(member) {
 
 
     const fileName =
-        crypto.randomUUID()
-        + "."
-        + extension;
+        `${crypto.randomUUID()}.${extension}`;
 
 
     const filePath =
-        user.id
-        + "/"
-        + fileName;
+        `${user.id}/${fileName}`;
 
 
     try {
-
-        /* =================================
-           UPLOAD FILE
-        ================================= */
 
         const {
             error: uploadError
@@ -651,13 +904,10 @@ async function uploadMemory(member) {
                     filePath,
                     file,
                     {
-
                         cacheControl:
                             "3600",
-
                         upsert:
                             false
-
                     }
                 );
 
@@ -665,13 +915,8 @@ async function uploadMemory(member) {
         if (uploadError) {
 
             throw uploadError;
-
         }
 
-
-        /* =================================
-           SAVE DATABASE RECORD
-        ================================= */
 
         const {
             error: databaseError
@@ -697,9 +942,6 @@ async function uploadMemory(member) {
 
         if (databaseError) {
 
-            /* Remove uploaded file
-               if database insert fails */
-
             await supabaseClient.storage
                 .from("the-w-private")
                 .remove([
@@ -707,18 +949,13 @@ async function uploadMemory(member) {
                 ]);
 
             throw databaseError;
-
         }
 
-
-        /* Clear inputs */
 
         fileInput.value = "";
 
         captionInput.value = "";
 
-
-        /* Refresh gallery */
 
         await loadAllMemories();
 
@@ -737,6 +974,7 @@ async function uploadMemory(member) {
 
 
         alert(
+            error.message ||
             "Something went wrong. Check your Supabase setup."
         );
 
@@ -746,10 +984,15 @@ async function uploadMemory(member) {
 
 
 /* =========================================
-   LOAD MEMORIES
+   LOAD ALL MEMORIES
 ========================================= */
 
 async function loadAllMemories() {
+
+    if (!supabaseClient) {
+        return;
+    }
+
 
     const {
         data,
@@ -774,30 +1017,15 @@ async function loadAllMemories() {
         );
 
         return;
-
     }
 
 
-    const galleries = [
-
-        "xarif",
-        "jaim",
-        "marzia",
-        "tahya",
-        "zarir",
-        "tahmid"
-
-    ];
-
-
-    /* Clear galleries */
-
     galleries.forEach(
-        function(member) {
+        member => {
 
             const gallery =
                 document.getElementById(
-                    "gallery-" + member
+                    `gallery-${member}`
                 );
 
 
@@ -810,8 +1038,6 @@ async function loadAllMemories() {
         }
     );
 
-
-    /* Render memories */
 
     for (
         const memory of data
@@ -827,28 +1053,21 @@ async function loadAllMemories() {
 
 
 /* =========================================
-   RENDER ONE MEMORY
+   RENDER MEMORY
 ========================================= */
 
 async function renderMemory(memory) {
 
     const gallery =
         document.getElementById(
-            "gallery-" +
-            memory.member_name
+            `gallery-${memory.member_name}`
         );
 
 
     if (!gallery) {
-
         return;
-
     }
 
-
-    /* =================================
-       CREATE TEMPORARY SIGNED URL
-    ================================= */
 
     const {
         data,
@@ -864,7 +1083,7 @@ async function renderMemory(memory) {
 
     if (
         error ||
-        !data
+        !data?.signedUrl
     ) {
 
         console.error(
@@ -873,69 +1092,49 @@ async function renderMemory(memory) {
         );
 
         return;
-
     }
 
-
-    /* =================================
-       CARD
-    ================================= */
 
     const card =
         document.createElement(
             "div"
         );
 
-
     card.className =
         "memory-card";
 
-
-    /* =================================
-       IMAGE
-    ================================= */
 
     const image =
         document.createElement(
             "img"
         );
 
-
     image.src =
         data.signedUrl;
-
 
     image.alt =
         "THE W memory";
 
+    image.loading =
+        "lazy";
 
-    /* =================================
-       INFO
-    ================================= */
 
     const info =
         document.createElement(
             "div"
         );
 
-
     info.className =
         "memory-info";
 
-
-    /* =================================
-       CAPTION
-    ================================= */
 
     const caption =
         document.createElement(
             "div"
         );
 
-
     caption.className =
         "memory-caption";
-
 
     caption.textContent =
         memory.caption;
@@ -946,27 +1145,19 @@ async function renderMemory(memory) {
     );
 
 
-    /* =================================
-       CHECK CURRENT USER
-    ================================= */
-
     const {
-        data: userData
+        data: currentUserData
     } =
         await supabaseClient.auth.getUser();
 
 
-    const user =
-        userData.user;
+    const currentUser =
+        currentUserData.user;
 
-
-    /* =================================
-       DELETE BUTTON
-    ================================= */
 
     if (
-        user &&
-        user.id === memory.user_id
+        currentUser &&
+        currentUser.id === memory.user_id
     ) {
 
         const deleteButton =
@@ -974,23 +1165,17 @@ async function renderMemory(memory) {
                 "button"
             );
 
-
         deleteButton.className =
             "delete-memory";
-
 
         deleteButton.textContent =
             "Delete";
 
 
-        deleteButton.onclick =
-            function () {
-
-                deleteMemory(
-                    memory
-                );
-
-            };
+        deleteButton.addEventListener(
+            "click",
+            () => deleteMemory(memory)
+        );
 
 
         info.appendChild(
@@ -1000,19 +1185,13 @@ async function renderMemory(memory) {
     }
 
 
-    /* =================================
-       APPEND CARD
-    ================================= */
-
     card.appendChild(
         image
     );
 
-
     card.appendChild(
         info
     );
-
 
     gallery.appendChild(
         card
@@ -1034,20 +1213,18 @@ async function deleteMemory(memory) {
 
 
     if (!confirmed) {
-
         return;
-
     }
 
 
-    /* Get current user */
-
     const {
-        data: {
-            user
-        }
+        data: userData
     } =
         await supabaseClient.auth.getUser();
+
+
+    const user =
+        userData.user;
 
 
     if (
@@ -1060,13 +1237,8 @@ async function deleteMemory(memory) {
         );
 
         return;
-
     }
 
-
-    /* =================================
-       DELETE IMAGE
-    ================================= */
 
     const {
         error: fileError
@@ -1085,19 +1257,13 @@ async function deleteMemory(memory) {
             fileError
         );
 
-
         alert(
             "Could not delete the picture."
         );
 
         return;
-
     }
 
-
-    /* =================================
-       DELETE DATABASE RECORD
-    ================================= */
 
     const {
         error: databaseError
@@ -1123,12 +1289,17 @@ async function deleteMemory(memory) {
         );
 
         return;
-
     }
 
-
-    /* Refresh */
 
     await loadAllMemories();
 
 }
+
+
+/* =========================================
+   EXPOSE UPLOAD FUNCTION
+========================================= */
+
+window.uploadMemory =
+    uploadMemory;
