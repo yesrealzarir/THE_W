@@ -606,24 +606,38 @@ async function requestAccess() {
 
         try {
 
-            result =
-                await response.json();
+           const responseText = await response.text();
 
-        } catch {
+let result = {};
 
-            result = {};
+try {
+    result = responseText
+        ? JSON.parse(responseText)
+        : {};
+} catch {
+    result = {
+        error: responseText
+    };
+}
 
-        }
+console.log("ACCESS REQUEST STATUS:", response.status);
+console.log("ACCESS REQUEST RESPONSE:", result);
 
+if (!response.ok) {
+    throw new Error(
+        result.error ||
+        `Request failed (${response.status})`
+    );
+}
 
-        if (!response.ok) {
+if (!response.ok) {
 
-            throw new Error(
-                result.error ||
-                "Request failed."
-            );
+    throw new Error(
+        result.error ||
+        `Request failed (${response.status}).`
+    );
 
-        }
+}
 
 
         message.textContent =
