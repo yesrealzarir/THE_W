@@ -1,41 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>THE W</title>
 
-    <meta
-        name="theme-color"
-        content="#08090c"
-    >
-
-    <title>THE W — Private Space</title>
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="style.css">
 
     <!-- Supabase -->
     <script
@@ -43,844 +14,820 @@
         defer
     ></script>
 
-    <script
-        src="script.js"
-        defer
-    ></script>
+    <!-- KEEP YOUR EXISTING SCRIPT.JS -->
+    <script src="script.js" defer></script>
 </head>
-
 
 <body>
 
-    <!-- =====================================================
-         BACKGROUND
-    ====================================================== -->
+<!-- =========================
+     LOGIN
+========================= -->
 
-    <div class="background">
-        <div class="background-glow glow-one"></div>
-        <div class="background-glow glow-two"></div>
-        <div class="background-grid"></div>
+<div id="loginScreen" class="auth-screen">
+
+    <div class="auth-bg"></div>
+
+    <div class="auth-card">
+
+        <div class="auth-logo">
+            THE <span>W</span>
+        </div>
+
+        <div class="auth-small">
+            PRIVATE MEMBERS AREA
+        </div>
+
+        <h1>Welcome back.</h1>
+
+        <p>
+            Shudhu THE W members er jonno.
+            <br>
+            Random manush dhukte parbe na. 💀
+        </p>
+
+        <form id="loginForm">
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                autocomplete="email"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit" class="main-button">
+                Enter THE W <span>→</span>
+            </button>
+
+        </form>
+
+        <button
+            type="button"
+            id="forgotPasswordButton"
+            class="text-button"
+        >
+            Forgot password?
+        </button>
+
+        <div class="access-request">
+
+            <div class="access-divider">
+                <span></span>
+                NOT A MEMBER?
+                <span></span>
+            </div>
+
+            <input
+                type="email"
+                id="requestEmail"
+                placeholder="Enter your Gmail"
+                autocomplete="email"
+            >
+
+            <button
+                type="button"
+                id="requestAccessButton"
+                class="secondary-button"
+            >
+                Request Access
+            </button>
+
+            <div id="requestMessage" class="request-message"></div>
+
+        </div>
+
+        <div id="loginError" class="error-message"></div>
+
     </div>
 
-
-    <!-- =====================================================
-         LOGIN SCREEN
-    ====================================================== -->
-
-    <main
-        id="loginScreen"
-        class="screen"
-    >
-
-        <div class="auth-wrapper">
-
-            <section class="auth-card">
-
-                <div class="brand-mark">
-                    W
-                </div>
-
-                <div class="brand-title">
-                    THE W
-                </div>
-
-                <p class="brand-subtitle">
-                    Our private space.
-                </p>
+</div>
 
 
-                <!-- LOGIN -->
+<!-- =========================
+     RESET PASSWORD
+========================= -->
 
-                <form
-                    id="loginForm"
-                    class="auth-form"
-                >
+<div id="resetPasswordScreen" class="auth-screen hidden">
 
-                    <div class="field">
+    <div class="auth-bg"></div>
 
-                        <label for="email">
-                            Email
-                        </label>
+    <div class="auth-card">
 
-                        <input
-                            id="email"
-                            type="email"
-                            placeholder="Enter your email"
-                            autocomplete="email"
-                            required
-                        >
+        <div class="auth-logo">
+            THE <span>W</span>
+        </div>
 
-                    </div>
+        <div class="auth-small">
+            PASSWORD RECOVERY
+        </div>
 
+        <h1>Set a new password.</h1>
 
-                    <div class="field">
+        <p>
+            Enter your new THE W password below.
+        </p>
 
-                        <label for="password">
-                            Password
-                        </label>
+        <form id="resetPasswordForm">
 
-                        <input
-                            id="password"
-                            type="password"
-                            placeholder="Enter your password"
-                            autocomplete="current-password"
-                            required
-                        >
+            <input
+                type="password"
+                id="newPassword"
+                placeholder="New password"
+                autocomplete="new-password"
+                minlength="6"
+                required
+            >
 
-                    </div>
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm new password"
+                autocomplete="new-password"
+                minlength="6"
+                required
+            >
 
+            <button type="submit" class="main-button">
+                Update Password <span>→</span>
+            </button>
 
-                    <button
-                        type="submit"
-                        class="primary-button"
-                    >
-                        <span>Enter THE W</span>
-                        <span class="button-arrow">→</span>
-                    </button>
+        </form>
 
-                </form>
+        <button
+            type="button"
+            id="backToLoginButton"
+            class="text-button"
+        >
+            ← Back to login
+        </button>
 
+        <div id="resetMessage" class="error-message"></div>
 
-                <div
-                    id="loginError"
-                    class="message"
-                ></div>
+    </div>
 
-
-                <button
-                    id="forgotPasswordButton"
-                    class="text-button"
-                    type="button"
-                >
-                    Forgot password?
-                </button>
+</div>
 
 
-                <div class="divider">
-                    <span>NEW MEMBER?</span>
-                </div>
+<!-- =========================
+     MAIN APP
+========================= -->
 
+<div id="app" class="hidden">
 
-                <!-- ACCESS REQUEST -->
+    <!-- NAV -->
 
-                <div class="request-box">
+    <nav>
 
-                    <div class="request-icon">
-                        +
-                    </div>
+        <div class="nav-logo">
+            THE <span>W</span>
+        </div>
 
-                    <div class="request-content">
+        <div class="nav-right">
 
-                        <h3>
-                            Request Access
-                        </h3>
+            <span id="currentMember">
+                MEMBER
+            </span>
 
-                        <p>
-                            Don't have an account yet?
-                            Send an access request.
-                        </p>
-
-                    </div>
-
-
-                    <div class="request-form">
-
-                        <input
-                            id="requestEmail"
-                            type="email"
-                            placeholder="Your email address"
-                            autocomplete="email"
-                        >
-
-                        <button
-                            id="requestAccessButton"
-                            type="button"
-                            class="secondary-button"
-                        >
-                            Request Access
-                        </button>
-
-                        <div
-                            id="requestMessage"
-                            class="request-message"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="auth-footer">
-                    <span>THE W</span>
-                    <span>•</span>
-                    <span>Private • Secure • Ours</span>
-                </div>
-
-            </section>
+            <button
+                id="logoutButton"
+                class="logout-button"
+            >
+                Logout
+            </button>
 
         </div>
 
-    </main>
+    </nav>
 
 
+    <!-- HERO -->
 
-    <!-- =====================================================
-         PASSWORD RESET SCREEN
-    ====================================================== -->
+    <header class="hero">
 
-    <main
-        id="resetPasswordScreen"
-        class="screen hidden"
-    >
+        <div class="hero-orb orb-one"></div>
+        <div class="hero-orb orb-two"></div>
 
-        <div class="auth-wrapper">
+        <div class="hero-inner">
 
-            <section class="auth-card reset-card">
+            <div class="hero-label">
+                <span class="live-dot"></span>
+                PRIVATE • THE W • 2026
+            </div>
 
-                <div class="brand-mark">
-                    W
-                </div>
+            <h1>
+                THE <span>W</span>
+            </h1>
 
-                <div class="brand-title">
-                    Reset Password
-                </div>
+            <p>
+                Ekta group.
+                Onk gula character.
+                Ar normal thakar kono guarantee nai. 💀
+            </p>
 
-                <p class="brand-subtitle">
-                    Choose a new password for your account.
-                </p>
-
-
-                <form
-                    id="resetPasswordForm"
-                    class="auth-form"
-                >
-
-                    <div class="field">
-
-                        <label for="newPassword">
-                            New Password
-                        </label>
-
-                        <input
-                            id="newPassword"
-                            type="password"
-                            placeholder="At least 6 characters"
-                            minlength="6"
-                            autocomplete="new-password"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="confirmPassword">
-                            Confirm Password
-                        </label>
-
-                        <input
-                            id="confirmPassword"
-                            type="password"
-                            placeholder="Enter it again"
-                            autocomplete="new-password"
-                            required
-                        >
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="primary-button"
-                    >
-                        <span>Update Password</span>
-                        <span class="button-arrow">→</span>
-                    </button>
-
-                </form>
-
-
-                <div
-                    id="resetMessage"
-                    class="message"
-                ></div>
-
-
-                <button
-                    id="backToLoginButton"
-                    type="button"
-                    class="text-button"
-                >
-                    ← Back to login
-                </button>
-
-            </section>
+            <a href="#members" class="hero-button">
+                Meet the W <span>→</span>
+            </a>
 
         </div>
 
-    </main>
+        <div class="hero-bottom">
+            <span>EST. 2026</span>
+            <span>•</span>
+            <span>THE W FAMILY</span>
+        </div>
+
+    </header>
 
 
+    <!-- MEMBERS -->
 
-    <!-- =====================================================
-         MAIN APP
-    ====================================================== -->
+    <main>
 
-    <main
-        id="app"
-        class="app hidden"
-    >
-
-        <!-- HEADER -->
-
-        <header class="topbar">
-
-            <div class="topbar-left">
-
-                <div class="mini-logo">
-                    W
-                </div>
-
-                <div>
-
-                    <div class="topbar-title">
-                        THE W
-                    </div>
-
-                    <div class="topbar-subtitle">
-                        Private memories
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="topbar-right">
-
-                <div class="user-pill">
-
-                    <div class="online-dot"></div>
-
-                    <span
-                        id="currentMember"
-                    >
-                        Member
-                    </span>
-
-                </div>
-
-
-                <button
-                    id="logoutButton"
-                    class="logout-button"
-                    type="button"
-                >
-                    <span>Logout</span>
-                    <span>↗</span>
-                </button>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- HERO -->
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <div class="eyebrow">
-                    ✦ PRIVATE COLLECTION
-                </div>
-
-                <h1>
-                    The memories<br>
-                    <span>that belong to us.</span>
-                </h1>
-
-                <p>
-                    A private corner for THE W —
-                    built to keep our best moments together.
-                </p>
-
-            </div>
-
-
-            <div class="hero-badge">
-
-                <div class="badge-number">
-                    W
-                </div>
-
-                <div>
-                    <strong>THE W</strong>
-                    <small>EST. 2026</small>
-                </div>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- MEMBERS -->
-
-        <section class="members-section">
+        <section id="members">
 
             <div class="section-heading">
 
                 <div>
-
-                    <span class="section-label">
-                        THE CREW
-                    </span>
+                    <div class="section-label">
+                        THE MEMBERS
+                    </div>
 
                     <h2>
-                        Our memories
+                        The W people.
                     </h2>
-
                 </div>
 
-                <div class="section-line"></div>
+                <p>
+                    Shobar nijer alada vibe.
+                </p>
 
             </div>
 
 
+            <div class="members-grid">
 
-            <!-- XARIF -->
 
-            <section class="member-section">
+                <!-- XARIF -->
 
-                <div class="member-header">
+                <article class="member-card xarif-card">
 
-                    <div class="member-avatar">
+                    <div class="card-top">
+                        <div class="member-number">01</div>
+
+                        <div class="theme-dot"></div>
+                    </div>
+
+                    <div class="avatar">
                         X
                     </div>
 
-                    <div class="member-info">
+                    <div class="nickname">
+                        TAI XARIF
+                    </div>
 
-                        <span class="member-label">
-                            MEMBER 01
-                        </span>
+                    <h3>Xarif</h3>
 
-                        <h3>
-                            Xarif
-                        </h3>
+                    <div class="member-role">
+                        THE BROTHER
+                    </div>
+
+                    <p>
+                        THE W-er ekjon na, basically amar bhai 💀
+                        <br><br>
+
+                        Cousin holeo relationship ta just
+                        cousin-er moddhe limited na.
+                        Amra milk brothers,
+                        tai bhai bollei beshi accurate.
+                        <br><br>
+
+                        Random kotha, moja, serious discussion —
+                        shob kichutei somehow ekshathe thaki.
+                    </p>
+
+                    <div class="tags">
+                        <span>BROTHER</span>
+                        <span>MILK BRO</span>
+                        <span>COUSIN</span>
+                    </div>
+
+                    <div class="gallery">
+
+                        <div class="gallery-title">
+                            W MOMENTS
+                        </div>
+
+                        <div
+                            class="photo-grid"
+                            id="gallery-xarif"
+                        ></div>
+
+                        <div class="upload-area">
+
+                            <input
+                                type="file"
+                                id="file-xarif"
+                                accept="image/*"
+                            >
+
+                            <input
+                                type="text"
+                                id="caption-xarif"
+                                placeholder="Write a caption..."
+                                maxlength="200"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="uploadMemory('xarif')"
+                            >
+                                + Add Memory
+                            </button>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </article>
 
 
-                <div
-                    id="gallery-xarif"
-                    class="memory-grid"
-                ></div>
+                <!-- JAIM -->
 
+                <article class="member-card jaim-card">
 
-                <div class="upload-card">
-
-                    <div class="upload-heading">
-                        Add a memory
+                    <div class="card-top">
+                        <div class="member-number">02</div>
+                        <div class="theme-dot"></div>
                     </div>
 
-                    <div class="upload-row">
-
-                        <input
-                            id="file-xarif"
-                            type="file"
-                            accept="image/*"
-                        >
-
-                        <input
-                            id="caption-xarif"
-                            type="text"
-                            placeholder="Write a caption..."
-                            maxlength="300"
-                        >
-
-                        <button
-                            type="button"
-                            onclick="uploadMemory('xarif')"
-                            class="upload-button"
-                        >
-                            Upload
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- JAIM -->
-
-            <section class="member-section">
-
-                <div class="member-header">
-
-                    <div class="member-avatar">
+                    <div class="avatar">
                         J
                     </div>
 
-                    <div class="member-info">
+                    <div class="nickname">
+                        VONDO HUZUR
+                    </div>
 
-                        <span class="member-label">
-                            MEMBER 02
-                        </span>
+                    <h3>Jaim</h3>
 
-                        <h3>
-                            Jaim
-                        </h3>
+                    <div class="member-role">
+                        VONDO HUZUR
+                    </div>
+
+                    <p>
+                        THE W-er nijer ekta character 💀
+                        <br><br>
+
+                        Amra oke Vondo Huzur bole daki,
+                        ar honestly naamta or sathe besh mile jay lol.
+                        <br><br>
+
+                        Amader sathe shobshomoy khele na,
+                        shobshomoy group-er moddheo thake na,
+                        but jokhon ashe tokhon amader khela
+                        noshto kore day.
+                    </p>
+
+                    <div class="tags">
+                        <span>VONDO</span>
+                        <span>HUZUR</span>
+                        <span>BROTHER</span>
+                    </div>
+
+                    <div class="gallery">
+
+                        <div class="gallery-title">
+                            W MOMENTS
+                        </div>
+
+                        <div
+                            class="photo-grid"
+                            id="gallery-jaim"
+                        ></div>
+
+                        <div class="upload-area">
+
+                            <input
+                                type="file"
+                                id="file-jaim"
+                                accept="image/*"
+                            >
+
+                            <input
+                                type="text"
+                                id="caption-jaim"
+                                placeholder="Write a caption..."
+                                maxlength="200"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="uploadMemory('jaim')"
+                            >
+                                + Add Memory
+                            </button>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </article>
 
 
-                <div
-                    id="gallery-jaim"
-                    class="memory-grid"
-                ></div>
+                <!-- MARZIA -->
 
+                <article class="member-card marzia-card">
 
-                <div class="upload-card">
+                    <div class="card-top">
 
-                    <div class="upload-heading">
-                        Add a memory
-                    </div>
+                        <div class="member-number">
+                            03
+                        </div>
 
-                    <div class="upload-row">
-
-                        <input
-                            id="file-jaim"
-                            type="file"
-                            accept="image/*"
-                        >
-
-                        <input
-                            id="caption-jaim"
-                            type="text"
-                            placeholder="Write a caption..."
-                            maxlength="300"
-                        >
-
-                        <button
-                            type="button"
-                            onclick="uploadMemory('jaim')"
-                            class="upload-button"
-                        >
-                            Upload
-                        </button>
+                        <div class="theme-dot"></div>
 
                     </div>
 
-                </div>
-
-            </section>
-
-
-
-            <!-- MARZIA -->
-
-            <section class="member-section">
-
-                <div class="member-header">
-
-                    <div class="member-avatar">
+                    <div class="avatar">
                         M
                     </div>
 
-                    <div class="member-info">
+                    <div class="important-badge">
+                        ✦ IMPORTANT MEMBER
+                    </div>
 
-                        <span class="member-label">
-                            MEMBER 03
-                        </span>
+                    <div class="nickname">
+                        THE ELDEST
+                    </div>
 
-                        <h3>
-                            Marzia
-                        </h3>
+                    <h3>Marzia</h3>
+
+                    <div class="member-role">
+                        THE ELDEST
+                    </div>
+
+                    <p>
+                        THE W-er shobar boro member,
+                        ar group-er ekjon genuinely important person.
+                        <br><br>
+
+                        Or personality-r moddhe ekta alada
+                        elegance ache — shobshomoy
+                        nijer presence diye noticeable hoye thake.
+                        <br><br>
+
+                        Group-er moddhe or ekta different role ache,
+                        ar honestly THE W-ke imagine korle
+                        or presence-ta naturally er moddhe chole ashe.
+                        <br><br>
+
+                        Shudhu member na,
+                        THE W-er ekta important part.
+                    </p>
+
+                    <div class="tags">
+                        <span>ELDEST</span>
+                        <span>IMPORTANT</span>
+                        <span>ICON</span>
+                    </div>
+
+                    <div class="gallery">
+
+                        <div class="gallery-title">
+                            MARZIA'S W MOMENTS
+                        </div>
+
+                        <div
+                            class="photo-grid"
+                            id="gallery-marzia"
+                        ></div>
+
+                        <div class="upload-area">
+
+                            <input
+                                type="file"
+                                id="file-marzia"
+                                accept="image/*"
+                            >
+
+                            <input
+                                type="text"
+                                id="caption-marzia"
+                                placeholder="Write a caption..."
+                                maxlength="200"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="uploadMemory('marzia')"
+                            >
+                                + Add Memory
+                            </button>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </article>
 
 
-                <div
-                    id="gallery-marzia"
-                    class="memory-grid"
-                ></div>
+                <!-- TAHYA -->
 
+                <article class="member-card tahya-card">
 
-                <div class="upload-card">
-
-                    <div class="upload-heading">
-                        Add a memory
+                    <div class="card-top">
+                        <div class="member-number">04</div>
+                        <div class="theme-dot"></div>
                     </div>
 
-                    <div class="upload-row">
-
-                        <input
-                            id="file-marzia"
-                            type="file"
-                            accept="image/*"
-                        >
-
-                        <input
-                            id="caption-marzia"
-                            type="text"
-                            placeholder="Write a caption..."
-                            maxlength="300"
-                        >
-
-                        <button
-                            type="button"
-                            onclick="uploadMemory('marzia')"
-                            class="upload-button"
-                        >
-                            Upload
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- TAHYA -->
-
-            <section class="member-section">
-
-                <div class="member-header">
-
-                    <div class="member-avatar">
+                    <div class="avatar">
                         T
                     </div>
 
-                    <div class="member-info">
+                    <div class="nickname">
+                        NOJRUL
+                    </div>
 
-                        <span class="member-label">
-                            MEMBER 04
-                        </span>
+                    <h3>Tahya</h3>
 
-                        <h3>
-                            Tahya
-                        </h3>
+                    <div class="member-role">
+                        THE POET
+                    </div>
+
+                    <p>
+                        THE W-er official poet ✍️
+                        <br><br>
+
+                        Amra jokhon shobai random kotha niye
+                        busy, Tahya tokhon poetry niye
+                        boshe thakte pare.
+                        <br><br>
+
+                        Or writing-er nijer ekta style ache,
+                        ja group-er usual chaos-er moddhe
+                        completely different ekta vibe add kore.
+                    </p>
+
+                    <div class="tags">
+                        <span>POET</span>
+                        <span>WRITER</span>
+                        <span>COUSIN</span>
+                    </div>
+
+                    <div class="gallery">
+
+                        <div class="gallery-title">
+                            W MOMENTS
+                        </div>
+
+                        <div
+                            class="photo-grid"
+                            id="gallery-tahya"
+                        ></div>
+
+                        <div class="upload-area">
+
+                            <input
+                                type="file"
+                                id="file-tahya"
+                                accept="image/*"
+                            >
+
+                            <input
+                                type="text"
+                                id="caption-tahya"
+                                placeholder="Write a caption..."
+                                maxlength="200"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="uploadMemory('tahya')"
+                            >
+                                + Add Memory
+                            </button>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </article>
 
 
-                <div
-                    id="gallery-tahya"
-                    class="memory-grid"
-                ></div>
+                <!-- ZARIR -->
 
+                <article class="member-card zarir-card">
 
-                <div class="upload-card">
-
-                    <div class="upload-heading">
-                        Add a memory
+                    <div class="card-top">
+                        <div class="member-number">05</div>
+                        <div class="theme-dot"></div>
                     </div>
 
-                    <div class="upload-row">
-
-                        <input
-                            id="file-tahya"
-                            type="file"
-                            accept="image/*"
-                        >
-
-                        <input
-                            id="caption-tahya"
-                            type="text"
-                            placeholder="Write a caption..."
-                            maxlength="300"
-                        >
-
-                        <button
-                            type="button"
-                            onclick="uploadMemory('tahya')"
-                            class="upload-button"
-                        >
-                            Upload
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- ZARIR -->
-
-            <section class="member-section">
-
-                <div class="member-header">
-
-                    <div class="member-avatar">
+                    <div class="avatar">
                         Z
                     </div>
 
-                    <div class="member-info">
+                    <div class="nickname">
+                        THE GOAT 🐐
+                    </div>
 
-                        <span class="member-label">
-                            MEMBER 05
-                        </span>
+                    <h3>Zarir</h3>
 
-                        <h3>
-                            Zarir
-                        </h3>
+                    <div class="member-role">
+                        THE GOAT 🐐
+                    </div>
+
+                    <p>
+                        THE W website-er coding-er pichhone
+                        je lokta boshe ache, shei ami 💀
+                        <br><br>
+
+                        Kew seriously boleni website banate,
+                        tao somehow boshe banai felchi.
+                        <br><br>
+
+                        Ekhon member howar sathe sathe
+                        unpaid developer-o hoye gechi lol.
+                        <br><br>
+
+                        Design, coding, random features —
+                        shobkichur pichhone somehow amar naam ache.
+                        <br><br>
+
+                        I AM THE GOAT.
+                    </p>
+
+                    <div class="tags">
+                        <span>CODER</span>
+                        <span>DEVELOPER</span>
+                        <span>GOAT</span>
+                    </div>
+
+                    <div class="gallery">
+
+                        <div class="gallery-title">
+                            ZARIR'S W MOMENTS
+                        </div>
+
+                        <div
+                            class="photo-grid"
+                            id="gallery-zarir"
+                        ></div>
+
+                        <div class="upload-area">
+
+                            <input
+                                type="file"
+                                id="file-zarir"
+                                accept="image/*"
+                            >
+
+                            <input
+                                type="text"
+                                id="caption-zarir"
+                                placeholder="Write a caption..."
+                                maxlength="200"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="uploadMemory('zarir')"
+                            >
+                                + Add Memory
+                            </button>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </article>
 
 
-                <div
-                    id="gallery-zarir"
-                    class="memory-grid"
-                ></div>
+                <!-- TAHMID -->
 
+                <article class="member-card tahmid-card">
 
-                <div class="upload-card">
-
-                    <div class="upload-heading">
-                        Add a memory
+                    <div class="card-top">
+                        <div class="member-number">06</div>
+                        <div class="theme-dot"></div>
                     </div>
 
-                    <div class="upload-row">
-
-                        <input
-                            id="file-zarir"
-                            type="file"
-                            accept="image/*"
-                        >
-
-                        <input
-                            id="caption-zarir"
-                            type="text"
-                            placeholder="Write a caption..."
-                            maxlength="300"
-                        >
-
-                        <button
-                            type="button"
-                            onclick="uploadMemory('zarir')"
-                            class="upload-button"
-                        >
-                            Upload
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- TAHMID -->
-
-            <section class="member-section">
-
-                <div class="member-header">
-
-                    <div class="member-avatar">
+                    <div class="avatar">
                         T
                     </div>
 
-                    <div class="member-info">
+                    <div class="nickname">
+                        FIFA
+                    </div>
 
-                        <span class="member-label">
-                            MEMBER 06
-                        </span>
+                    <h3>Tahmid</h3>
 
-                        <h3>
-                            Tahmid
-                        </h3>
+                    <div class="member-role">
+                        NESHAKHOR GAMER
+                    </div>
+
+                    <p>
+                        THE W-er shobar choto member 💀
+                        <br><br>
+
+                        FC Mobile-er proti or bhalobasha
+                        alada level-er.
+                        <br><br>
+
+                        FC Mobile khelte khelte kokhon je
+                        onekkhon hoye jay, she nijeo bujhe na 😂
+                        <br><br>
+
+                        Ar amra jokhon shobai mile fun kori
+                        ba ekshathe kheli, tokhon Tahmid
+                        usually ghumay 💀
+                        <br><br>
+
+                        Amra: “Tahmid, chol ekshathe kheli!”
+                        <br>
+                        Tahmid: 😴
+                        <br><br>
+
+                        Tarpor ghum theke uthe abar FC Mobile.
+                    </p>
+
+                    <div class="tags">
+                        <span>YOUNGEST</span>
+                        <span>FC MOBILE</span>
+                        <span>SLEEPY</span>
+                        <span>GAMER</span>
+                    </div>
+
+                    <div class="gallery">
+
+                        <div class="gallery-title">
+                            W MOMENTS
+                        </div>
+
+                        <div
+                            class="photo-grid"
+                            id="gallery-tahmid"
+                        ></div>
+
+                        <div class="upload-area">
+
+                            <input
+                                type="file"
+                                id="file-tahmid"
+                                accept="image/*"
+                            >
+
+                            <input
+                                type="text"
+                                id="caption-tahmid"
+                                placeholder="Write a caption..."
+                                maxlength="200"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="uploadMemory('tahmid')"
+                            >
+                                + Add Memory
+                            </button>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </article>
 
-
-                <div
-                    id="gallery-tahmid"
-                    class="memory-grid"
-                ></div>
-
-
-                <div class="upload-card">
-
-                    <div class="upload-heading">
-                        Add a memory
-                    </div>
-
-                    <div class="upload-row">
-
-                        <input
-                            id="file-tahmid"
-                            type="file"
-                            accept="image/*"
-                        >
-
-                        <input
-                            id="caption-tahmid"
-                            type="text"
-                            placeholder="Write a caption..."
-                            maxlength="300"
-                        >
-
-                        <button
-                            type="button"
-                            onclick="uploadMemory('tahmid')"
-                            class="upload-button"
-                        >
-                            Upload
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
+            </div>
 
         </section>
 
-
-
-        <!-- FOOTER -->
-
-        <footer class="site-footer">
-
-            <div class="footer-logo">
-                THE W
-            </div>
-
-            <p>
-                Made for us. Built to remember.
-            </p>
-
-            <span>
-                © 2026 THE W
-            </span>
-
-        </footer>
-
     </main>
 
-</body>
 
+    <footer>
+        <div class="footer-logo">
+            THE <span>W</span>
+        </div>
+
+        <p>
+            Made with chaos, friendship & questionable decisions.
+        </p>
+
+        <small>
+            PRIVATE MEMBERS AREA • 2026
+        </small>
+    </footer>
+
+</div>
+
+</body>
 </html>
