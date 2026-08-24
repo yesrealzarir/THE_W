@@ -7,20 +7,11 @@ const SUPABASE_URL =
     "https://mtobiuuuvkuhyvwtcouz.supabase.co";
 
 const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10b2JpdXV1dmt1d3Rjb3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTM0OTEsImV4cCI6MjEwMjk4OTQ5MX0.osFVJGr2BiekiaQAFREZ4L1W8AqiaM7O4BcCN2_qbIw";
-
-
-/* =========================================
-   ACCESS REQUEST EDGE FUNCTION
-========================================= */
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10b2JpdXV1dmt1aHl2d3Rjb3V6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTM0OTEsImV4cCI6MjEwMjk4OTQ5MX0.osFVJGr2BiekiaQAFREZ4L1W8AqiaM7O4BcCN2_qbIw";
 
 const ACCESS_REQUEST_URL =
     `${SUPABASE_URL}/functions/v1/access-request`;
 
-
-/* =========================================
-   SUPABASE CLIENT
-========================================= */
 
 let supabaseClient;
 
@@ -65,7 +56,6 @@ window.addEventListener(
 
         setupEventListeners();
 
-
         await checkSession();
 
     }
@@ -104,52 +94,52 @@ function setupEventListeners() {
     }
 
 
-    const requestAccessButton =
+    const requestButton =
         document.getElementById(
             "requestAccessButton"
         );
 
-    if (requestAccessButton) {
-        requestAccessButton.addEventListener(
+    if (requestButton) {
+        requestButton.addEventListener(
             "click",
             requestAccess
         );
     }
 
 
-    const forgotPasswordButton =
-        document.getElementById(
-            "forgotPasswordButton"
-        );
-
-    if (forgotPasswordButton) {
-        forgotPasswordButton.addEventListener(
-            "click",
-            sendPasswordReset
-        );
-    }
-
-
-    const resetPasswordForm =
+    const resetForm =
         document.getElementById(
             "resetPasswordForm"
         );
 
-    if (resetPasswordForm) {
-        resetPasswordForm.addEventListener(
+    if (resetForm) {
+        resetForm.addEventListener(
             "submit",
             updatePassword
         );
     }
 
 
-    const backToLoginButton =
+    const forgotButton =
+        document.getElementById(
+            "forgotPasswordButton"
+        );
+
+    if (forgotButton) {
+        forgotButton.addEventListener(
+            "click",
+            sendPasswordReset
+        );
+    }
+
+
+    const backButton =
         document.getElementById(
             "backToLoginButton"
         );
 
-    if (backToLoginButton) {
-        backToLoginButton.addEventListener(
+    if (backButton) {
+        backButton.addEventListener(
             "click",
             showLogin
         );
@@ -157,10 +147,11 @@ function setupEventListeners() {
 
 
     supabaseClient.auth.onAuthStateChange(
-        async (event, session) => {
+        (event, session) => {
 
             if (
-                event === "PASSWORD_RECOVERY"
+                event ===
+                "PASSWORD_RECOVERY"
             ) {
 
                 showResetPassword();
@@ -170,7 +161,8 @@ function setupEventListeners() {
 
 
             if (
-                event === "SIGNED_OUT"
+                event ===
+                "SIGNED_OUT"
             ) {
 
                 showLogin();
@@ -180,14 +172,14 @@ function setupEventListeners() {
 
 
             if (
-                session &&
-                event === "SIGNED_IN"
+                event ===
+                    "SIGNED_IN" &&
+                session
             ) {
 
                 showApp(
                     session.user
                 );
-
             }
 
         }
@@ -206,7 +198,8 @@ async function checkSession() {
         data,
         error
     } =
-        await supabaseClient.auth.getSession();
+        await supabaseClient.auth
+            .getSession();
 
 
     if (error) {
@@ -246,27 +239,21 @@ async function login(event) {
     event.preventDefault();
 
 
-    const emailInput =
-        document.getElementById(
-            "email"
-        );
+    const email =
+        document
+            .getElementById("email")
+            .value
+            .trim();
 
-    const passwordInput =
-        document.getElementById(
-            "password"
-        );
+    const password =
+        document
+            .getElementById("password")
+            .value;
 
     const errorBox =
         document.getElementById(
             "loginError"
         );
-
-
-    const email =
-        emailInput.value.trim();
-
-    const password =
-        passwordInput.value;
 
 
     errorBox.textContent =
@@ -277,12 +264,11 @@ async function login(event) {
         data,
         error
     } =
-        await supabaseClient.auth.signInWithPassword({
-
-            email,
-            password
-
-        });
+        await supabaseClient.auth
+            .signInWithPassword({
+                email,
+                password
+            });
 
 
     if (error) {
@@ -291,7 +277,6 @@ async function login(event) {
             "Login error:",
             error
         );
-
 
         errorBox.textContent =
             "Login failed. Email/password check koro.";
@@ -302,10 +287,204 @@ async function login(event) {
 
     errorBox.textContent = "";
 
-
     showApp(
         data.user
     );
+
+}
+
+
+/* =========================================
+   REQUEST ACCESS
+========================================= */
+
+async function requestAccess() {
+
+    const emailInput =
+        document.getElementById(
+            "requestEmail"
+        );
+
+    const message =
+        document.getElementById(
+            "requestMessage"
+        );
+
+    const button =
+        document.getElementById(
+            "requestAccessButton"
+        );
+
+
+    if (
+        !emailInput ||
+        !message ||
+        !button
+    ) {
+
+        console.error(
+            "Request Access elements missing."
+        );
+
+        return;
+    }
+
+
+    const email =
+        emailInput.value
+            .trim()
+            .toLowerCase();
+
+
+    /* =========================================
+       VALIDATION
+    ========================================= */
+
+    if (!email) {
+
+        message.textContent =
+            "Gmail address dao.";
+
+        return;
+    }
+
+
+    if (
+        !email.includes("@") ||
+        !email.includes(".")
+    ) {
+
+        message.textContent =
+            "Valid email address dao.";
+
+        return;
+    }
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Sending...";
+
+    message.textContent = "";
+
+
+    try {
+
+        /* =========================================
+           SEND REQUEST
+        ========================================= */
+
+        const response =
+            await fetch(
+                ACCESS_REQUEST_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            email: email
+                        })
+                }
+            );
+
+
+        /* =========================================
+           READ RESPONSE
+        ========================================= */
+
+        const text =
+            await response.text();
+
+
+        let result = {};
+
+        try {
+
+            result =
+                text
+                    ? JSON.parse(text)
+                    : {};
+
+        } catch {
+
+            result = {
+                error:
+                    text ||
+                    "Unknown server response."
+            };
+        }
+
+
+        console.log(
+            "Access request status:",
+            response.status
+        );
+
+        console.log(
+            "Access request response:",
+            result
+        );
+
+
+        /* =========================================
+           SERVER ERROR
+        ========================================= */
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.error ||
+                `Request failed (${response.status}).`
+            );
+        }
+
+
+        /* =========================================
+           SUCCESS
+        ========================================= */
+
+        message.textContent =
+            "Request sent! Wait for approval.";
+
+        emailInput.value = "";
+
+
+    } catch (error) {
+
+        console.error(
+            "Access request error:",
+            error
+        );
+
+
+        if (
+            error instanceof TypeError
+        ) {
+
+            message.textContent =
+                "Could not connect to the server. Edge Function deploy/CORS check koro.";
+
+        } else {
+
+            message.textContent =
+                error.message ||
+                "Could not send request.";
+        }
+
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Request Access";
+    }
 
 }
 
@@ -347,18 +526,21 @@ async function sendPasswordReset() {
 
 
     const redirectUrl =
-        `${window.location.origin}${window.location.pathname}`;
+        window.location.origin +
+        window.location.pathname;
 
 
     const {
         error
     } =
-        await supabaseClient.auth.resetPasswordForEmail(
-            email,
-            {
-                redirectTo: redirectUrl
-            }
-        );
+        await supabaseClient.auth
+            .resetPasswordForEmail(
+                email,
+                {
+                    redirectTo:
+                        redirectUrl
+                }
+            );
 
 
     if (error) {
@@ -367,7 +549,6 @@ async function sendPasswordReset() {
             "Password reset error:",
             error
         );
-
 
         errorBox.textContent =
             error.message;
@@ -404,17 +585,25 @@ function showResetPassword() {
         );
 
 
-    loginScreen.classList.add(
-        "hidden"
-    );
+    if (loginScreen) {
+        loginScreen.classList.add(
+            "hidden"
+        );
+    }
 
-    app.classList.add(
-        "hidden"
-    );
 
-    resetScreen.classList.remove(
-        "hidden"
-    );
+    if (app) {
+        app.classList.add(
+            "hidden"
+        );
+    }
+
+
+    if (resetScreen) {
+        resetScreen.classList.remove(
+            "hidden"
+        );
+    }
 
 }
 
@@ -474,12 +663,11 @@ async function updatePassword(event) {
     const {
         error
     } =
-        await supabaseClient.auth.updateUser({
-
-            password:
-                newPassword
-
-        });
+        await supabaseClient.auth
+            .updateUser({
+                password:
+                    newPassword
+            });
 
 
     if (error) {
@@ -488,7 +676,6 @@ async function updatePassword(event) {
             "Update password error:",
             error
         );
-
 
         message.textContent =
             error.message;
@@ -501,170 +688,17 @@ async function updatePassword(event) {
         "Password updated successfully!";
 
 
-    document.getElementById(
-        "newPassword"
-    ).value = "";
-
-    document.getElementById(
-        "confirmPassword"
-    ).value = "";
-
-
     setTimeout(
         async () => {
 
-            await supabaseClient.auth.signOut();
+            await supabaseClient.auth
+                .signOut();
 
             showLogin();
 
         },
         1500
     );
-
-}
-
-
-/* =========================================
-   REQUEST ACCESS
-========================================= */
-
-async function requestAccess() {
-
-    const emailInput =
-        document.getElementById(
-            "requestEmail"
-        );
-
-    const message =
-        document.getElementById(
-            "requestMessage"
-        );
-
-    const button =
-        document.getElementById(
-            "requestAccessButton"
-        );
-
-
-    const email =
-        emailInput.value.trim();
-
-
-    if (!email) {
-
-        message.textContent =
-            "Gmail address dao.";
-
-        return;
-    }
-
-
-    if (
-        !email.includes("@") ||
-        !email.includes(".")
-    ) {
-
-        message.textContent =
-            "Valid email address dao.";
-
-        return;
-    }
-
-
-    button.disabled = true;
-
-    button.textContent =
-        "Sending...";
-
-    message.textContent = "";
-
-
-    try {
-
-        const response =
-            await fetch(
-                ACCESS_REQUEST_URL,
-                {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            email
-                        })
-
-                }
-            );
-
-
-        let result = {};
-
-        try {
-
-           const responseText = await response.text();
-
-let result = {};
-
-try {
-    result = responseText
-        ? JSON.parse(responseText)
-        : {};
-} catch {
-    result = {
-        error: responseText
-    };
-}
-
-console.log("ACCESS REQUEST STATUS:", response.status);
-console.log("ACCESS REQUEST RESPONSE:", result);
-
-if (!response.ok) {
-    throw new Error(
-        result.error ||
-        `Request failed (${response.status})`
-    );
-}
-
-if (!response.ok) {
-
-    throw new Error(
-        result.error ||
-        `Request failed (${response.status}).`
-    );
-
-}
-
-
-        message.textContent =
-            "Request sent! Wait for approval.";
-
-        emailInput.value = "";
-
-
-    } catch (error) {
-
-        console.error(
-            "Access request error:",
-            error
-        );
-
-
-        message.textContent =
-            error.message ||
-            "Could not send request.";
-
-    }
-
-
-    button.disabled = false;
-
-    button.textContent =
-        "Request Access";
 
 }
 
@@ -691,17 +725,25 @@ function showLogin() {
         );
 
 
-    loginScreen.classList.remove(
-        "hidden"
-    );
+    if (loginScreen) {
+        loginScreen.classList.remove(
+            "hidden"
+        );
+    }
 
-    resetScreen.classList.add(
-        "hidden"
-    );
 
-    app.classList.add(
-        "hidden"
-    );
+    if (resetScreen) {
+        resetScreen.classList.add(
+            "hidden"
+        );
+    }
+
+
+    if (app) {
+        app.classList.add(
+            "hidden"
+        );
+    }
 
 }
 
@@ -728,17 +770,25 @@ async function showApp(user) {
         );
 
 
-    loginScreen.classList.add(
-        "hidden"
-    );
+    if (loginScreen) {
+        loginScreen.classList.add(
+            "hidden"
+        );
+    }
 
-    resetScreen.classList.add(
-        "hidden"
-    );
 
-    app.classList.remove(
-        "hidden"
-    );
+    if (resetScreen) {
+        resetScreen.classList.add(
+            "hidden"
+        );
+    }
+
+
+    if (app) {
+        app.classList.remove(
+            "hidden"
+        );
+    }
 
 
     const currentMember =
@@ -747,11 +797,13 @@ async function showApp(user) {
         );
 
 
-    if (currentMember) {
+    if (
+        currentMember &&
+        user
+    ) {
 
         currentMember.textContent =
-            user.email;
-
+            user.email || "MEMBER";
     }
 
 
@@ -769,7 +821,8 @@ async function logout() {
     const {
         error
     } =
-        await supabaseClient.auth.signOut();
+        await supabaseClient.auth
+            .signOut();
 
 
     if (error) {
@@ -797,7 +850,8 @@ async function uploadMemory(member) {
     const {
         data: userData
     } =
-        await supabaseClient.auth.getUser();
+        await supabaseClient.auth
+            .getUser();
 
 
     const user =
@@ -927,7 +981,6 @@ async function uploadMemory(member) {
 
 
         if (uploadError) {
-
             throw uploadError;
         }
 
@@ -938,7 +991,6 @@ async function uploadMemory(member) {
             await supabaseClient
                 .from("memories")
                 .insert({
-
                     user_id:
                         user.id,
 
@@ -950,7 +1002,6 @@ async function uploadMemory(member) {
 
                     file_path:
                         filePath
-
                 });
 
 
@@ -989,16 +1040,15 @@ async function uploadMemory(member) {
 
         alert(
             error.message ||
-            "Something went wrong. Check your Supabase setup."
+            "Something went wrong."
         );
-
     }
 
 }
 
 
 /* =========================================
-   LOAD ALL MEMORIES
+   LOAD MEMORIES
 ========================================= */
 
 async function loadAllMemories() {
@@ -1035,7 +1085,7 @@ async function loadAllMemories() {
 
 
     galleries.forEach(
-        member => {
+        (member) => {
 
             const gallery =
                 document.getElementById(
@@ -1044,9 +1094,7 @@ async function loadAllMemories() {
 
 
             if (gallery) {
-
                 gallery.innerHTML = "";
-
             }
 
         }
@@ -1054,13 +1102,12 @@ async function loadAllMemories() {
 
 
     for (
-        const memory of data
+        const memory of data || []
     ) {
 
         await renderMemory(
             memory
         );
-
     }
 
 }
@@ -1160,18 +1207,19 @@ async function renderMemory(memory) {
 
 
     const {
-        data: currentUserData
+        data: userData
     } =
-        await supabaseClient.auth.getUser();
+        await supabaseClient.auth
+            .getUser();
 
 
-    const currentUser =
-        currentUserData.user;
+    const user =
+        userData.user;
 
 
     if (
-        currentUser &&
-        currentUser.id === memory.user_id
+        user &&
+        user.id === memory.user_id
     ) {
 
         const deleteButton =
@@ -1195,7 +1243,6 @@ async function renderMemory(memory) {
         info.appendChild(
             deleteButton
         );
-
     }
 
 
@@ -1220,13 +1267,11 @@ async function renderMemory(memory) {
 
 async function deleteMemory(memory) {
 
-    const confirmed =
-        confirm(
+    if (
+        !confirm(
             "Delete this memory?"
-        );
-
-
-    if (!confirmed) {
+        )
+    ) {
         return;
     }
 
@@ -1234,7 +1279,8 @@ async function deleteMemory(memory) {
     const {
         data: userData
     } =
-        await supabaseClient.auth.getUser();
+        await supabaseClient.auth
+            .getUser();
 
 
     const user =
@@ -1272,7 +1318,7 @@ async function deleteMemory(memory) {
         );
 
         alert(
-            "Could not delete the picture."
+            fileError.message
         );
 
         return;
@@ -1299,7 +1345,7 @@ async function deleteMemory(memory) {
         );
 
         alert(
-            "Could not delete the memory."
+            databaseError.message
         );
 
         return;
@@ -1312,7 +1358,7 @@ async function deleteMemory(memory) {
 
 
 /* =========================================
-   EXPOSE UPLOAD FUNCTION
+   GLOBAL FUNCTION
 ========================================= */
 
 window.uploadMemory =
